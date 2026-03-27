@@ -3,7 +3,7 @@
   <img src="./images/TETTRIs_logo.png" alt="tettris logo" width="80"/>
 </div>
 
-Authors: Frederik Hendrickx and Carl Vangestel, 2025
+Contributing authors: Frederik Hendrickx and Carl Vangestel, 2025
 
 License: CC-BY 4.0
 
