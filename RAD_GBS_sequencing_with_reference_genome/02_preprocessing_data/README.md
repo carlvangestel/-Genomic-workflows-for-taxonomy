@@ -1,5 +1,4 @@
 ##FASTQC##
-
 ##Demultiplex##
 
 ##Trimming##
