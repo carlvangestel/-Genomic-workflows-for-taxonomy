@@ -1,8 +1,5 @@
-##FASTQC##
-
+##FASTQC##  
 ##Demultiplex##  
-##Trimming##
-
-##REMOVE Adapter sequences##
-
+##Trimming##  
+##REMOVE Adapter sequences##  
 ##Rename files##
