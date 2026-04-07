@@ -12,8 +12,16 @@ module load MultiQC
 multiqc ./*_fastqc.zip
 ```
 
-#### 2) Trimming  
-#### 3) Remove Adapter sequences  
+#### 3) trim T at end reverse read
+explanation wet lab protocol
+
+
+#### 3) Trimming and Remove Adapter sequences  
+```bash
+java -jar trimmomatic-0.39.jar PE input_forward.fq.gz input_reverse.fq.gz output_forward_paired.fq.gz output_forward_unpaired.fq.gz output_reverse_paired.fq.gz output_reverse_unpaired.fq.gz
+ ILLUMINACLIP:TruSeq3-PE.fa:2:30:10
+```
+
 #### 4) Demultiplex 
 module load STACKS
 ```bash
@@ -27,7 +35,8 @@ sample_TGTGTGAC-CAGATC.rem.1.fq.gz
 sample_ACGTAGCA-CAGATC.rem.2.fq.gz
 
 #### 5) Remove PCR duplicates
-clone_filter -1 ./Sample1_ACACGACA-ACAGTG.1.fq.gz -2 ./Sample1_ACACGACA-ACAGTG.2.fq.gz -o ../dedup -i gzfastq -y gzfastq
+clone_filter -1 ./Sample1_ACACGACA-ACAGTG.1.fq.gz -2 ./Sample1_ACACGACA-ACAGTG.2.fq.gz -o ../dedup -i gzfastq -y gzfastq  
+Explanation which methods allow this and which not, refer to Nature Reviews Genetics  
 
 #### 6) Rename files
 ```bash
