@@ -17,6 +17,12 @@ module load STACKS
 process_radtags -P -1 ./library1_R1.fastq.gz -2 ./library1_R2.fastq.gz -o ../samples/  -b ./barcode_lib1.txt -e sbfI -r -c -q --inline_index
 -i gzfastq
 ```
+
+sample_ACGTAGCA-CAGATC.1.fq.gz      
+sample_ACGTAGCA-CAGATC.2.fq.gz      
+sample_TGTGTGAC-CAGATC.rem.1.fq.gz
+sample_ACGTAGCA-CAGATC.rem.2.fq.gz
+
 #### 3) Trimming  
 
 
