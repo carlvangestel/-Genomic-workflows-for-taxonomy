@@ -11,7 +11,10 @@ module load MultiQC
 ```bash
 multiqc ./*_fastqc.zip
 ```
-#### 2) Demultiplex 
+
+#### 2) Trimming  
+#### 3) Remove Adapter sequences  
+#### 4) Demultiplex 
 module load STACKS
 ```bash
 process_radtags -P -1 ./library1_R1.fastq.gz -2 ./library1_R2.fastq.gz -o ../samples/  -b ./barcode_lib1.txt -e sbfI -r -c -q --inline_index
@@ -22,11 +25,6 @@ sample_ACGTAGCA-CAGATC.1.fq.gz
 sample_ACGTAGCA-CAGATC.2.fq.gz      
 sample_TGTGTGAC-CAGATC.rem.1.fq.gz
 sample_ACGTAGCA-CAGATC.rem.2.fq.gz
-
-#### 3) Trimming  
-
-
-#### 4) Remove Adapter sequences  
 
 #### 5) Remove PCR duplicates
 clone_filter -1 ./Sample1_ACACGACA-ACAGTG.1.fq.gz -2 ./Sample1_ACACGACA-ACAGTG.2.fq.gz -o ../dedup -i gzfastq -y gzfastq
