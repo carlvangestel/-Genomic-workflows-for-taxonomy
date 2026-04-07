@@ -1,5 +1,6 @@
 ##FASTQC##
-##Demultiplex##
+
+##Demultiplex##\n
 
 ##Trimming##
 
