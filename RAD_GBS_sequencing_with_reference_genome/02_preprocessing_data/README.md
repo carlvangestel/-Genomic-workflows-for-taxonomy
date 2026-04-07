@@ -1,4 +1,4 @@
-#### 1) FASTQC  
+#### 1) Quality check  
 module load FastQC
 ```bash
 lib="library1_R1.fastq.gz library1_R2.gz"
