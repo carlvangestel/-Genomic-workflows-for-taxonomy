@@ -1,8 +1,6 @@
 ##FASTQC##
 
-##Demultiplex##\n
-
-##Trimming##
+##Demultiplex##  ##Trimming##
 
 ##REMOVE Adapter sequences##
 
