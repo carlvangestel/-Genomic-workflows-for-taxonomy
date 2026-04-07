@@ -12,14 +12,21 @@ module load MultiQC
 multiqc ./*_fastqc.zip
 ```
 #### 2) Demultiplex 
+module load STACKS
 ```bash
 process_radtags -P -1 ./library1_R1.fastq.gz -2 ./library1_R2.fastq.gz -o ../samples/  -b ./barcode_lib1.txt -e sbfI -r -c -q --inline_index
 -i gzfastq
 ```
 #### 3) Trimming  
 
+
 #### 4) Remove Adapter sequences  
 
 #### 5) Remove PCR duplicates
+clone_filter -1 ./Sample1_ACACGACA-ACAGTG.1.fq.gz -2 ./Sample1_ACACGACA-ACAGTG.2.fq.gz -o ../dedup -i gzfastq -y gzfastq
 
 #### 6) Rename files
+```bash
+cp ./dedup/Sample1_CAGTGTGT-ATCACG.1.1.fq.gz ./names/[ID_samplename]_[location].1.fq.gz
+cp ./dedup/Sample1_CAGTGTGT-ATCACG.2.2.fq.gz ./names/[ID_samplename]_[location].2.fq.gz
+```
