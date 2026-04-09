@@ -15,7 +15,7 @@ Overall, this command takes paired-end gzipped FASTQ data, demultiplexes reads i
 
 _(*) Note that the flag '--inline_index is entirely determined on how you construct your library in the wetlab. We constructed our libraries in such a way the first index is sample-specific and actually part of the DNA RADtag sequence itself, while the other barcode is library specific and sequenced via a separate index primer_
 
-A typical fastq file would look like:
+A typical read in a fastq file would look like: 
 @LH00478:285:2273MCLT1:2:1103:10477:28895 1:N:0:**ACAGTG**
 **ACACTGAC**TGCAGGTACATGGCAGACCATCGTAAGAGTTGTAAAACGTTTAAGGGAGACGGACTGTGTCAGCCGACCTCGAGCACGTAGACCTCGTAATGTAGGACGCAAAGTGCAACCGGAAGATGTGCTAGCATACGCTC
 
