@@ -22,13 +22,14 @@ CACACAGT	ACAGTG
 CAGTCTCA	ACAGTG
 GTACTCGT	ACAGTG
 ```
-_A typical read in a fastq file of such a library will look like: 
+A typical read in a fastq file of such a library will look like: 
 
 ```bash
 @LH00478:285:2273MCLT1:2:1103:10477:28895 1:N:0:ACAGTG 
 ACACTGACTGCAGGTACATGGCAGACCATCGTAAGAGTTGTAAAACGTTTAAGGGAGACGGACTGTGTCAGCCGACCTCGAGCACGTAGACCTCGTAATGTAGGACGCAAAGTGCAACCGGAAGATGTGCTAGCATACGCTC 
 ```
 ACAGTG (in header) refers to the index barcode and all reads of all samples belonging to this library will have this barcode in the header of the sequence. ACACTGAC (at start of the read) refers to the inline barcode and is unique for this sample (all reads belonging to this sample will contain this inline barcode).
+
 
 Overall, this command takes paired-end gzipped FASTQ data, demultiplexes reads into individual samples based on inline barcodes, performs cleaning and quality filtering, attempts to rescue slightly imperfect reads, and outputs high-quality, sample-specific read files to the designated directory.
 
