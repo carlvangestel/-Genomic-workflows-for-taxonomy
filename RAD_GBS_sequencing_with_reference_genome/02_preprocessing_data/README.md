@@ -13,9 +13,9 @@ The process_radtags command is configured to handle paired-end sequencing data, 
 
 Overall, this command takes paired-end gzipped FASTQ data, demultiplexes reads into individual samples based on inline barcodes, performs cleaning and quality filtering, attempts to rescue slightly imperfect reads, and outputs high-quality, sample-specific read files to the designated directory.
 
-_Note that this is determined how you construct your library in the wetlab_[^1]
+_Note that this is determined how you construct your library in the wetlab_ [^1]
 
-
+[^1] : here is the note
 #### Step 2) Quality check of raw reads
 The first step in this process is to evaluate read quality using the software package FastQC. Detailed documentation and guidance can be found in the official FastQC manual: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
 
