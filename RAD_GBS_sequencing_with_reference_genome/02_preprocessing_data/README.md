@@ -18,7 +18,7 @@ _A typical read in a fastq file of such a library will look like:
 
 @LH00478:285:2273MCLT1:2:1103:10477:28895 1:N:0:**ACAGTG** 
 **ACACTGAC**TGCAGGTACATGGCAGACCATCGTAAGAGTTGTAAAACGTTTAAGGGAGACGGACTGTGTCAGCCGACCTCGAGCACGTAGACCTCGTAATGTAGGACGCAAAGTGCAACCGGAAGATGTGCTAGCATACGCTC 
-ACAGTG refers to the index barcode and all reads of all samples belonging to this library will have this barcode in the header of the sequence. ACACTGAC refers to the inline barcode (part of the 'DNA sequence') and is specific for this sample (all reads belonging to this sample will contain this inline barcode)._
+ACAGTG refers to the index barcode and all reads of all samples belonging to this library will have this barcode in the header of the sequence. ACACTGAC refers to the inline barcode and is unique for this sample (all reads belonging to this sample will contain this inline barcode)._
 
 #### Step 2) Quality check of raw reads
 The first step in this process is to evaluate read quality using the software package FastQC. Detailed documentation and guidance can be found in the official FastQC manual: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
