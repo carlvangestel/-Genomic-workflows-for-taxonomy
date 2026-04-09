@@ -11,14 +11,29 @@ process_radtags -P -1 ./library1_R1.fastq.gz -2 ./library1_R2.fastq.gz -o ../sam
 ```
 The process_radtags command is configured to handle paired-end sequencing data, as indicated by the -P flag. The forward and reverse reads are provided via the -1 and -2 options, respectively, pointing to gzipped FASTQ files (library1_R1.fastq.gz and library1_R2.fastq.gz). Processed output files are written to the directory specified by -o (../samples/). Several options are used to improve data quality and retention. The -r flag enables the rescue of barcodes and RAD-tags, allowing reads with minor sequencing errors in the barcode or restriction site to still be retained. The -c option removes reads containing uncalled bases (Ns), ensuring cleaner data, while -q applies a sliding window quality filter to discard low-quality reads. The --inline_index option specifies that one barcode is located within the read sequences themselves and the other in a separate index reads<sup>(*)</sup>. Finally, the -i gzfastq flag defines the input format as gzipped FASTQ files.
 
-Overall, this command takes paired-end gzipped FASTQ data, demultiplexes reads into individual samples based on inline barcodes, performs cleaning and quality filtering, attempts to rescue slightly imperfect reads, and outputs high-quality, sample-specific read files to the designated directory.
+_(*) Note that the flag '--inline_index is entirely determined on how you construct your library in the wetlab. _
 
-_(*) Note that the flag '--inline_index is entirely determined on how you construct your library in the wetlab. We constructed our libraries in such a way the first index is sample-specific and actually part of the DNA RADtag sequence itself, while the other barcode is library specific and sequenced via a separate index primer_
+The barcode file (barcode_lib1.txt) contains a list of all barcodes needed to assign reads to a specific sample. We constructed our libraries in such a way the first index is sample-specific and actually part of the DNA RADtag sequence itself, while the other barcode is library specific and sequenced via a separate index primer. The list below for example refers to a specific library (barcode 'ACAGTG') and contains 5 samples with a unique barcode ('ACACTGAC', 'ACGTAGCA', etc.)
+
+```bash
+ACACTGAC	ACAGTG
+ACGTAGCA	ACAGTG
+CACACAGT	ACAGTG
+CAGTCTCA	ACAGTG
+GTACTCGT	ACAGTG
+```
 _A typical read in a fastq file of such a library will look like: 
 
+```bash
 @LH00478:285:2273MCLT1:2:1103:10477:28895 1:N:0:**ACAGTG** 
 **ACACTGAC**TGCAGGTACATGGCAGACCATCGTAAGAGTTGTAAAACGTTTAAGGGAGACGGACTGTGTCAGCCGACCTCGAGCACGTAGACCTCGTAATGTAGGACGCAAAGTGCAACCGGAAGATGTGCTAGCATACGCTC 
-ACAGTG refers to the index barcode and all reads of all samples belonging to this library will have this barcode in the header of the sequence. ACACTGAC refers to the inline barcode and is unique for this sample (all reads belonging to this sample will contain this inline barcode)._
+```
+ACAGTG refers to the index barcode and all reads of all samples belonging to this library will have this barcode in the header of the sequence. ACACTGAC refers to the inline barcode and is unique for this sample (all reads belonging to this sample will contain this inline barcode).
+
+Overall, this command takes paired-end gzipped FASTQ data, demultiplexes reads into individual samples based on inline barcodes, performs cleaning and quality filtering, attempts to rescue slightly imperfect reads, and outputs high-quality, sample-specific read files to the designated directory.
+
+
+
 
 #### Step 2) Quality check of raw reads
 The first step in this process is to evaluate read quality using the software package FastQC. Detailed documentation and guidance can be found in the official FastQC manual: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
