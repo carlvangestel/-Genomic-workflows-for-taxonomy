@@ -2,11 +2,19 @@
 
 Before aligning sequencing data to a reference genome and performing SNP identification, it is essential to assess the quality of the raw reads and carry out any necessary preprocessing. This ensures that only high-quality, reliable data are used in downstream analyses.
 
+#### 1) Demultiplex libraries
+During library construction each sample was provided a unique barcode and pooled into a common library that is being sequenced. Therefore, as a first step we will demultiplex our sample library to separate the pooled NGS data back into individual sample FASTQ files based on these unique barcodes. We use the software package STACKS, specifically built to handle various restriction-enzyme based libraries.  
+
+```bash
+process_radtags -P -1 ./library1_R1.fastq.gz -2 ./library1_R2.fastq.gz -o ../samples/  -b ./barcode_lib1.txt -e sbfI -r -c -q --inline_index
+-i gzfastq
+```
+
+#### 1) Quality check of raw reads
 The first step in this process is to evaluate read quality using the software package FastQC. Detailed documentation and guidance can be found in the official FastQC manual: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
 
-FastQC provides a range of quality metrics that should be carefully examined. In particular, verify that per-base quality scores remain above an acceptable threshold across the entire read length, noting that quality often declines toward the ends of reads. Additionally, inspect the presence of overrepresented sequences, assess the extent of missing or ambiguous data, and check for potential adapter contamination. These indicators help determine whether trimming or filtering steps are required before proceeding.
-#### 1) Quality check of raw reads 
-module load FastQC
+FastQC provides a range of quality metrics that should be carefully examined. In particular, verify that per-base quality scores remain above an acceptable threshold across the entire read length, noting that quality often declines toward the ends of reads. Additionally, inspect the presence of overrepresented sequences, assess the extent of missing or ambiguous data, and check for potential adapter contamination. These indicators help determine whether trimming or filtering steps are required before proceeding. We will run 
+ 
 ```bash
 lib="library1_R1.fastq.gz library1_R2.gz"
 for i in $lib;
