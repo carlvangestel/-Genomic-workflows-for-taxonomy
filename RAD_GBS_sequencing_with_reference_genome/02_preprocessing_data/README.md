@@ -33,10 +33,17 @@ ACAGTG (in header) refers to the index barcode and all reads of all samples belo
 
 Overall, this command takes paired-end gzipped FASTQ data, demultiplexes reads into individual samples based on inline barcodes, performs cleaning and quality filtering, attempts to rescue slightly imperfect reads, and outputs high-quality, sample-specific read files to the designated directory.
 
+#### Step 2. 'T' trimming 
+This step might not be necessary for all protocols as it depends on how your libraries were constructed. During library preparation, we ligated the P2 adaptor to our RADtag via 'A-tailing'. Hence, all our reverse reads start with a 'T', which is not part of the true DNA sequence and should be removed from our reads.
 
+```bash
+		for f in *.2.fq.gz
+		do
+				fastx_trimmer -f 2 -i $f -o $f.trimmed
+		done
+```
 
-
-#### Step 2. Quality check of raw reads
+#### Step 3. Quality check of raw reads
 The first step in this process is to evaluate read quality using the software package FastQC. Detailed documentation and guidance can be found in the official FastQC manual: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
 
 FastQC provides a range of quality metrics that should be carefully examined. In particular, verify that per-base quality scores remain above an acceptable threshold across the entire read length, noting that quality often declines toward the ends of reads. Additionally, inspect the presence of overrepresented sequences, assess the extent of missing or ambiguous data, and check for potential adapter contamination. These indicators help determine whether trimming or filtering steps are required before proceeding. We will run 
