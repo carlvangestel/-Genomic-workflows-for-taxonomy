@@ -13,7 +13,7 @@ The process_radtags command is configured to handle paired-end sequencing data, 
 
 _(*) Note that the flag '--inline_index is entirely determined on how you construct your library in the wetlab._
 
-The barcode file (barcode_lib1.txt) contains a list of all barcodes needed to assign reads to a specific sample. We constructed our libraries in such a way the first index is sample-specific and actually part of the DNA RADtag sequence itself, while the other barcode is library specific and sequenced via a separate index primer. The list below for example refers to a specific library (barcode 'ACAGTG') and contains 5 samples with a unique barcode ('ACACTGAC', 'ACGTAGCA', etc.)
+The barcode file ('barcode_lib1.txt') contains a list of all barcodes needed to assign reads to each sample. We constructed our libraries in such a way the first index is sample-specific and actually part of the DNA RADtag sequence itself, while the other barcode is library specific and sequenced via a separate index primer. For example, the list below refers to a specific library (barcode 'ACAGTG') and contains 5 samples, each with a unique barcode ('ACACTGAC', 'ACGTAGCA', etc.)
 
 ```bash
 ACACTGAC	ACAGTG
