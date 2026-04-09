@@ -5,7 +5,7 @@ Before aligning sequencing data to a reference genome and performing SNP identif
 The first step in this process is to evaluate read quality using the software package FastQC. Detailed documentation and guidance can be found in the official FastQC manual: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
 
 FastQC provides a range of quality metrics that should be carefully examined. In particular, verify that per-base quality scores remain above an acceptable threshold across the entire read length, noting that quality often declines toward the ends of reads. Additionally, inspect the presence of overrepresented sequences, assess the extent of missing or ambiguous data, and check for potential adapter contamination. These indicators help determine whether trimming or filtering steps are required before proceeding.
-#### 1) Quality check reads 
+#### 1) Quality check of raw reads 
 module load FastQC
 ```bash
 lib="library1_R1.fastq.gz library1_R2.gz"
