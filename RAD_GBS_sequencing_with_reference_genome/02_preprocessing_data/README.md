@@ -13,8 +13,11 @@ The process_radtags command is configured to handle paired-end sequencing data, 
 
 Overall, this command takes paired-end gzipped FASTQ data, demultiplexes reads into individual samples based on inline barcodes, performs cleaning and quality filtering, attempts to rescue slightly imperfect reads, and outputs high-quality, sample-specific read files to the designated directory.
 
-_(*) Note that the flag '--inline_index is entirely determined on how you construct your library in the wetlab. We constructed our libraries in such a way the first index is sample-specific and actually part of the DNA RADtag sequence, while the other sequence is library specific and sequenced via a separate index primer_
+_(*) Note that the flag '--inline_index is entirely determined on how you construct your library in the wetlab. We constructed our libraries in such a way the first index is sample-specific and actually part of the DNA RADtag sequence itself, while the other barcode is library specific and sequenced via a separate index primer_
 
+A typical fastq file would look like:
+@LH00478:285:2273MCLT1:2:1103:10477:28895 1:N:0:**ACAGTG**
+**ACACTGAC**TGCAGGTACATGGCAGACCATCGTAAGAGTTGTAAAACGTTTAAGGGAGACGGACTGTGTCAGCCGACCTCGAGCACGTAGACCTCGTAATGTAGGACGCAAAGTGCAACCGGAAGATGTGCTAGCATACGCTC
 
 #### Step 2) Quality check of raw reads
 The first step in this process is to evaluate read quality using the software package FastQC. Detailed documentation and guidance can be found in the official FastQC manual: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
