@@ -59,33 +59,16 @@ Rather than exploring every single output separately, we will use MultiQC to com
 multiqc ./*_fastqc.zip
 ```
 
-#### Step 3) trim T at end reverse read
-explanation wet lab protocol
-optional, depending on the library 
-
-#### 3) Trimming and Remove Adapter sequences  
+#### Step 4. Trimming and Remove Adapter sequences  
 ```bash
 java -jar trimmomatic-0.39.jar PE input_forward.fq.gz input_reverse.fq.gz output_forward_paired.fq.gz output_forward_unpaired.fq.gz output_reverse_paired.fq.gz output_reverse_unpaired.fq.gz
  ILLUMINACLIP:TruSeq3-PE.fa:2:30:10
 ```
-
-#### 4) Demultiplex 
-module load STACKS
-```bash
-process_radtags -P -1 ./library1_R1.fastq.gz -2 ./library1_R2.fastq.gz -o ../samples/  -b ./barcode_lib1.txt -e sbfI -r -c -q --inline_index
--i gzfastq
-```
-
-sample_ACGTAGCA-CAGATC.1.fq.gz      
-sample_ACGTAGCA-CAGATC.2.fq.gz      
-sample_TGTGTGAC-CAGATC.rem.1.fq.gz
-sample_ACGTAGCA-CAGATC.rem.2.fq.gz
-
-#### 5) Remove PCR duplicates
+#### Step 5. Remove PCR duplicates
 clone_filter -1 ./Sample1_ACACGACA-ACAGTG.1.fq.gz -2 ./Sample1_ACACGACA-ACAGTG.2.fq.gz -o ../dedup -i gzfastq -y gzfastq  
 Explanation which methods allow this and which not, refer to Nature Reviews Genetics  
 
-#### 6) Rename files
+#### Step 6. Rename files
 ```bash
 cp ./dedup/Sample1_CAGTGTGT-ATCACG.1.1.fq.gz ./names/[ID_samplename]_[location].1.fq.gz
 cp ./dedup/Sample1_CAGTGTGT-ATCACG.2.2.fq.gz ./names/[ID_samplename]_[location].2.fq.gz
