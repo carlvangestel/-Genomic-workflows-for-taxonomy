@@ -68,13 +68,13 @@ done
 ```
 
 #### Step 5. Trimming and Remove Adapter sequences  
-Depending on the output of the quality report you may need to trim reads for low quality bases or remove adapter sequences using Trimmomatic. 
+Depending on the output of the quality report you may need to trim reads for low quality bases or remove adapter sequences using Trimmomatic.
 
 ```bash
 java -jar trimmomatic-0.39.jar PE input_forward.fq.gz input_reverse.fq.gz output_forward_paired.fq.gz output_forward_unpaired.fq.gz output_reverse_paired.fq.gz output_reverse_unpaired.fq.gz
- ILLUMINACLIP:TruSeq3-PE.fa:2:30:10
+ ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:5 TRAILING:5 SLIDINGWINDOW:4:20 MINLEN:50
 ```
-The command runs Trimmomatic in paired-end (PE) mode to perform adapter trimming on sequencing reads. The file names refer respectively to the forward and reverse input reads. The four output files define how reads are written after processing: output_forward_paired.fq.gz and output_reverse_paired.fq.gz contain read pairs where both mates survive filtering, whereas output_forward_unpaired.fq.gz and output_reverse_unpaired.fq.gz contain reads whose mate was discarded during trimming.
+The example command above runs Trimmomatic in paired-end (PE) mode to perform adapter trimming on sequencing reads. The file names refer respectively to the forward and reverse input reads. The four output files define how reads are written after processing: output_forward_paired.fq.gz and output_reverse_paired.fq.gz contain read pairs where both mates survive filtering, whereas output_forward_unpaired.fq.gz and output_reverse_unpaired.fq.gz contain reads whose mate was discarded during trimming.
 
 The ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 step specifies adapter removal. Here, TruSeq3-PE.fa is the FASTA file containing adapter sequences to be clipped. The value 2 sets the maximum number of mismatches allowed in the initial seed match between read and adapter. The value 30 is the palindrome clip threshold, used when detecting adapter contamination in paired-end reads by aligning read pairs against each other; higher values make clipping more stringent. The value 10 is the simple clip threshold, which applies to matches between the read and adapter sequences in a straightforward alignment; again, higher values increase stringency. Together, these parameters control how sensitively and strictly adapter sequences are detected and removed from the reads.
 
