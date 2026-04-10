@@ -78,8 +78,13 @@ The example command above runs Trimmomatic in paired-end (PE) mode to perform ad
 
 The ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 step specifies adapter removal. Here, TruSeq3-PE.fa is the FASTA file containing adapter sequences to be clipped. The value 2 sets the maximum number of mismatches allowed in the initial seed match between read and adapter. The value 30 is the palindrome clip threshold, used when detecting adapter contamination in paired-end reads by aligning read pairs against each other; higher values make clipping more stringent. The value 10 is the simple clip threshold, which applies to matches between the read and adapter sequences in a straightforward alignment; again, higher values increase stringency. Together, these parameters control how sensitively and strictly adapter sequences are detected and removed from the reads.
 
+The command runs Trimmomatic in paired-end mode to perform adapter removal and quality trimming on sequencing reads. The input files (input_forward.fq.gz and input_reverse.fq.gz) correspond to forward and reverse reads, while the output is split into paired reads (both mates retained) and unpaired reads (one mate discarded during filtering).
+
+Adapter sequences are removed using ILLUMINACLIP:TruSeq3-PE.fa:2:30:10, where TruSeq3-PE.fa contains the adapter sequences, 2 defines the maximum mismatches allowed in the initial seed match, 30 sets the palindrome clip threshold for paired-end adapter detection, and 10 sets the simple clip threshold for standard adapter matching. Quality trimming is further performed with LEADING:5 and TRAILING:5, which remove bases from the start and end of reads if their quality score is below 5. The SLIDINGWINDOW:4:20 option scans each read with a 4-base window and trims when the average quality within the window drops below 20. Finally, MINLEN:50 discards any reads shorter than 50 bases after trimming. Together, these steps ensure removal of adapter contamination and low-quality sequence data while retaining high-quality reads for downstream analyses.
+
+
 #### Step 6. Rename files
-At this stage, you may want to rename your files into something more recognizable and conventient for you in downstream analyses, like only an ID name and location name for example.
+At this point, it can be helpful to rename your files using clear and concise names—such as a concatenation of sample ID and location—to simplify downstream analyses.
 
 ```bash
 cp ./dedup/Sample1_ACACGACA-ACAGTG.1_paired.fq.gz ./names/[ID_samplename]_[location].1.fq.gz
