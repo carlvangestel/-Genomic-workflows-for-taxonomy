@@ -37,10 +37,10 @@ Overall, this command takes paired-end gzipped FASTQ data, demultiplexes reads i
 This step might not be necessary for all protocols as it depends on how your libraries were constructed. During library preparation, we ligated the P2 adaptor to our RADtag via 'A-tailing'. Hence, all our reverse reads start with a 'T', which is not part of the true DNA sequence and should be removed from our reads.
 
 ```bash
-		for f in *.2.fq.gz
-		do
-				fastx_trimmer -f 2 -i $f -o $f.trimmed
-		done
+for f in *.2.fq.gz
+do
+    fastp -i "$f" -o "${f%fq.gz}.trimmed.fq.gz" --trim_front1 1
+done
 ```
 
 #### Step 3. Quality check of raw reads
