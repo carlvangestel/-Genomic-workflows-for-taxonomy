@@ -82,8 +82,8 @@ The ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 step specifies adapter removal. Here, Tru
 At this stage, you may want to rename your files into something more recognizable and conventient for you in downstream analyses, like only an ID name and location name for example.
 
 ```bash
-cp ./dedup/Sample1_CAGTGTGT-ATCACG.1.1.fq.gz ./names/[ID_samplename]_[location].1.fq.gz
-cp ./dedup/Sample1_CAGTGTGT-ATCACG.2.2.fq.gz ./names/[ID_samplename]_[location].2.fq.gz
+cp ./dedup/Sample1_ACACGACA-ACAGTG.1_paired.fq.gz ./names/[ID_samplename]_[location].1.fq.gz
+cp ./dedup/Sample1_ACACGACA-ACAGTG.2.trimmed_paired.fq.gz ./names/[ID_samplename]_[location].2.fq.gz
 ```
 <br><br><br>
 _References.  
