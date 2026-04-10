@@ -71,7 +71,7 @@ done
 Depending on the output of the quality report you may need to trim reads for low quality bases or remove adapter sequences using Trimmomatic.
 
 ```bash
-java -jar trimmomatic-0.39.jar PE input_forward.fq.gz input_reverse.fq.gz output_forward_paired.fq.gz output_forward_unpaired.fq.gz output_reverse_paired.fq.gz output_reverse_unpaired.fq.gz
+java -jar trimmomatic-0.39.jar PE Sample1_ACACGACA-ACAGTG.1.fq.gz Sample1_ACACGACA-ACAGTG.2.trimmed.fq.gz Sample1_ACACGACA-ACAGTG.1_paired.fq.gz Sample1_ACACGACA-ACAGTG.1_unpaired.fq.gz Sample1_ACACGACA-ACAGTG.2.trimmed_paired.fq.gz Sample1_ACACGACA-ACAGTG.2.trimmed_unpaired.fq.gz
  ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:5 TRAILING:5 SLIDINGWINDOW:4:20 MINLEN:50
 ```
 The example command above runs Trimmomatic in paired-end (PE) mode to perform adapter trimming on sequencing reads. The file names refer respectively to the forward and reverse input reads. The four output files define how reads are written after processing: output_forward_paired.fq.gz and output_reverse_paired.fq.gz contain read pairs where both mates survive filtering, whereas output_forward_unpaired.fq.gz and output_reverse_unpaired.fq.gz contain reads whose mate was discarded during trimming.
