@@ -67,7 +67,7 @@ do
 done
 ```
 
-#### Step 5. Trimming and Remove Adapter sequences  
+#### Step 5. Quality trimming and Adapter removal  
 Depending on the output of the quality report you may need to trim reads for low quality bases or remove adapter sequences using Trimmomatic.
 
 ```bash
