@@ -44,9 +44,9 @@ done
 ```
 
 #### Step 3. Quality check of raw reads
-The first step in this process is to evaluate read quality using the software package FastQC. Detailed documentation and guidance can be found in the official FastQC manual: https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+Next, evaluate read quality using the software package FastQC. Detailed documentation and guidance can be found in the official FastQC manual (https://www.bioinformatics.babraham.ac.uk/projects/fastqc).
 
-FastQC provides a range of quality metrics that should be carefully examined. In particular, verify that per-base quality scores remain above an acceptable threshold across the entire read length, noting that quality often declines toward the ends of reads. Additionally, inspect the presence of overrepresented sequences, assess the extent of missing or ambiguous data, and check for potential adapter contamination. These indicators help determine whether trimming or filtering steps are required before proceeding. We will run 
+FastQC provides a range of quality metrics that should be carefully examined. In particular, verify that per-base quality scores remain above an acceptable threshold across the entire read length, noting that quality often declines toward the ends of reads. Additionally, inspect the presence of overrepresented sequences, assess the extent of missing or ambiguous data, and check for potential adapter contamination. These indicators help determine whether trimming or filtering steps are required before proceeding.
  
 ```bash
 lib="library1_R1.fastq.gz library1_R2.gz"
@@ -54,8 +54,7 @@ for i in $lib;
 do fastqc ./$i -o ./FASTQC/FASTQC_raw
 done
 ```
-
-module load MultiQC
+Rather than exploring every single output separately, we will use MultiQC to compile this info into a single interactive report.
 ```bash
 multiqc ./*_fastqc.zip
 ```
