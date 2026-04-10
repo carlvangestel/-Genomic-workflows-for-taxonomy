@@ -24,6 +24,7 @@ Before we start, it is most convenient to set up an organized directory structur
 |MultiQC| Summarizes multiple FastQC outputs into a single interactive report (https://github.com/MultiQC/MultiQC)|
 |Stacks| Tools specifically designed for processing restriction enzyme-based data (https://catchenlab.life.illinois.edu/stacks)|
 |Fastp| Processing tool to filter, trim or merge sequence reads (https://github.com/opengene/fastp)|
+|Trimmomatic| A flexible read trimming tool for Illumina NGS data (https://trimmomatic.com)|
 |PAUP*| Phylogenetic software program to estimate a species trees from SNPs using the SVDQuartets method (https://paup.phylosolutions.com)| 
 |R packages| *adegenet* (Exploratory Analysis of Genetic and Genomic Data): contains a set of explorative tools such as multivariate methods to provide low-dimensional visualization of SNP variaton (https://cran.r-project.org/web/packages/adegenet/index.html)|
 
