@@ -82,28 +82,6 @@ bwa mem -t 8 -R "@RG\tID:$SAMPLE\tSM:$SAMPLE\tPL:ILLUMINA" "$GENOME" "$READ1" "$
 samtools index "$BAM_OUT"
 ```
 
-### 3. Remove PCR duplicates
-
-Before calling single nucleotide polymorphisms (SNPs) a last preprocessing step is required being removal of PCR duplicates. During library preparation, PCR amplification can generate multiple reads from the same original DNA fragment. These are not independent observations and may bias variant calling, so only one copy should be retained. PCR duplicates can be identified when both reads in a pair have the same alignment start positions. They can be removed using **picard’s MarkDuplicates** tool (https://broadinstitute.github.io/picard/) using the following script:
-
-```bash
-java -Xmx8G -jar picard-tools-2.9.0/picard.jar MarkDuplicates REMOVE_DUPLICATES=true ASSUME_SORTED=true VALIDATION_STRINGENCY=SILENT INPUT="$BAM_IN" OUTPUT="$BAM_RMD_OUT" METRICS_FILE="$BAM_RMD_METRICS"
-```
-
-This command removes duplicate reads from `$BAM_IN` (e.g., sampleID.bam) and writes the cleaned output to `$BAM_RMD_OUT` (e.g. `sampleID.rmd.bam`). It also produces a metrics file (`$BAM_RMD_METRICS`, e.g., `sampleID.rmd.metrics.txt`) reporting the proportion of duplicates found. Once completed, we again index the new duplicate-removed bam files as before `samtools index "$BAM_RMD_OUT"`. To save space, the original bam files can be removed. 
-
-If you want to run this in parallel on a cluster, the following example script (picard_rmd.sh) can be used:
-
-```bash
-#!/bin/bash
-
-cd ~/project
-
-# Load modules
-module load SAMtools
-
-# Read sample name from file based on array task ID
-SAMPLE=$(sed -n "${PBS_ARRAYID}p" ./samples/samples.txt)
 
 # Define input and output files
 BAM_IN="./bam/${SAMPLE}.bam"
