@@ -90,7 +90,7 @@ At this point, it can be helpful to rename your files using clear and concise na
 cp ./dedup/Sample1_ACACGACA-ACAGTG.1_paired.fq.gz ./names/[ID_samplename]_[location].1.fq.gz
 cp ./dedup/Sample1_ACACGACA-ACAGTG.2.trimmed_paired.fq.gz ./names/[ID_samplename]_[location].2.fq.gz
 ```
-<br><br><br>
+<br><br>
 _References.  
 Andrews, K. R., Good, J. M., Miller, M. R., Luikart, G., & Hohenlohe, P. A. (2016). Harnessing the power of RADseq for ecological and evolutionary genomics. Nature Reviews Genetics, 17(2), 81–92. https://doi.org/10.1038/nrg.2015.28  
 Davey, J. W., Hohenlohe, P. A., Etter, P. D., Boone, J. Q., Catchen, J. M., & Blaxter, M. L. (2011). Genome-wide genetic marker discovery and genotyping using next-generation sequencing. Nature Reviews Genetics, 12(7), 499–510. https://doi.org/10.1038/nrg3012_
