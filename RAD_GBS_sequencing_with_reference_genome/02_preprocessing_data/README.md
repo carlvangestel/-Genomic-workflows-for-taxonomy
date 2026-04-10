@@ -50,8 +50,7 @@ ACAGTG (in header) refers to the index barcode and all reads of all samples belo
 Overall, this command takes paired-end gzipped FASTQ data, demultiplexes reads into individual samples based on inline barcodes, performs cleaning and quality filtering, attempts to rescue slightly imperfect reads, and outputs high-quality, sample-specific read files to the designated directory.
 
 #### Step 3. Remove PCR duplicates
-Many restriction-enzyme based procedures entail a PCR step within thier protocol, which may cause several biases and errors in downstream analyses (a common error due to PCR duplicates is heterozygotes to turn up as homozygotes). When your restriction-enzyme based protocol includes random shearing of digested DNA (traditional RADseq) PCR duplicates can be removed. Revise Andrews et al. (2016) and Davey et al. (2011) for a nice overview which protocols allow PCR duplicates to be removed. We here use the 'clone-filter' function embeeded within Stacks to remove PCR duplicates.
-
+Many restriction enzyme–based protocols include a PCR amplification step, which can introduce biases and errors in downstream analyses. A common issue associated with PCR duplicates is the miscalling of heterozygotes as homozygotes during SNP detection. In protocols that incorporate random shearing of digested DNA (such as traditional RADseq), it is possible to identify and remove PCR duplicates. For a detailed overview of which protocols allow duplicate removal and which do not, see Andrews et al. (2016) and Davey et al. (2011). To remove PCR duplicates we use the clone_filter function implemented in the STACKS software package.
 ```bash
 clone_filter -1 ./Sample1_ACACGACA-ACAGTG.1.fq.gz -2 ./Sample1_ACACGACA-ACAGTG.2.fq.gz -o ../dedup -i gzfastq -y gzfastq  
 ```
