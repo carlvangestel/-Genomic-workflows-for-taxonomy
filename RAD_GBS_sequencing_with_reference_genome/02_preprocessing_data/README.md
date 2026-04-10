@@ -50,8 +50,11 @@ ACAGTG (in header) refers to the index barcode and all reads of all samples belo
 Overall, this command takes paired-end gzipped FASTQ data, demultiplexes reads into individual samples based on inline barcodes, performs cleaning and quality filtering, attempts to rescue slightly imperfect reads, and outputs high-quality, sample-specific read files to the designated directory.
 
 #### Step 3. Remove PCR duplicates
+Many restriction-enzyme based procedures entail a PCR step within thier protocol, which may cause several biases and errors in downstream analyses (a common error due to PCR duplicates is heterozygotes to turn up as homozygotes). When your restriction-enzyme based protocol includes random shearing of digested DNA (traditional RADseq) PCR duplicates can be removed. Revise Andrews et al. (2016) and Davey et al. (2011) for a nice overview which protocols allow PCR duplicates to be removed. We here use the 'clone-filter' function embeeded within Stacks to remove PCR duplicates.
+
+```bash
 clone_filter -1 ./Sample1_ACACGACA-ACAGTG.1.fq.gz -2 ./Sample1_ACACGACA-ACAGTG.2.fq.gz -o ../dedup -i gzfastq -y gzfastq  
-Explanation which methods allow this and which not, refer to Nature Reviews Genetics  
+```
 
 #### Step 4. 'T' trimming 
 This step might not be necessary for all protocols as it depends on how your libraries were constructed. During library preparation, we ligated the P2 adaptor to our RADtag via 'A-tailing'. Hence, all our reverse reads start with a 'T', which is not part of the true DNA sequence and should be removed from our reads.
