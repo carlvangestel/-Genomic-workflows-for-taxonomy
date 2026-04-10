@@ -49,7 +49,11 @@ ACAGTG (in header) refers to the index barcode and all reads of all samples belo
 
 Overall, this command takes paired-end gzipped FASTQ data, demultiplexes reads into individual samples based on inline barcodes, performs cleaning and quality filtering, attempts to rescue slightly imperfect reads, and outputs high-quality, sample-specific read files to the designated directory.
 
-#### Step 3. 'T' trimming 
+#### Step 3. Remove PCR duplicates
+clone_filter -1 ./Sample1_ACACGACA-ACAGTG.1.fq.gz -2 ./Sample1_ACACGACA-ACAGTG.2.fq.gz -o ../dedup -i gzfastq -y gzfastq  
+Explanation which methods allow this and which not, refer to Nature Reviews Genetics  
+
+#### Step 4. 'T' trimming 
 This step might not be necessary for all protocols as it depends on how your libraries were constructed. During library preparation, we ligated the P2 adaptor to our RADtag via 'A-tailing'. Hence, all our reverse reads start with a 'T', which is not part of the true DNA sequence and should be removed from our reads.
 
 ```bash
@@ -59,7 +63,7 @@ do
 done
 ```
 
-#### Step 4. Trimming and Remove Adapter sequences  
+#### Step 5. Trimming and Remove Adapter sequences  
 Depending on the output of the quality report you may need to trim reads or remove adapter sequences. 
 
 ```bash
@@ -67,10 +71,6 @@ java -jar trimmomatic-0.39.jar PE input_forward.fq.gz input_reverse.fq.gz output
  ILLUMINACLIP:TruSeq3-PE.fa:2:30:10
 ```
 We here opted to  ...
-
-#### Step 5. Remove PCR duplicates
-clone_filter -1 ./Sample1_ACACGACA-ACAGTG.1.fq.gz -2 ./Sample1_ACACGACA-ACAGTG.2.fq.gz -o ../dedup -i gzfastq -y gzfastq  
-Explanation which methods allow this and which not, refer to Nature Reviews Genetics  
 
 #### Step 6. Rename files
 ```bash
