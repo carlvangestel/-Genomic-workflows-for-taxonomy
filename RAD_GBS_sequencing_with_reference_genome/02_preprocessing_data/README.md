@@ -1,4 +1,4 @@
-## Pre-processing of raw sequence reads
+## Preprocessing of raw sequence reads
 
 Before aligning sequencing data to a reference genome and performing SNP identification, it is essential to assess the quality of the raw reads and carry out any necessary preprocessing. This ensures that only high-quality, reliable data are used in downstream analyses.
 
