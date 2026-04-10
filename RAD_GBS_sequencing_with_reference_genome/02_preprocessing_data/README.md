@@ -39,7 +39,7 @@ This step might not be necessary for all protocols as it depends on how your lib
 ```bash
 for f in *.2.fq.gz
 do
-    fastp -i "$f" -o "${f%fq.gz}.trimmed.fq.gz" --trim_front1 1
+    fastp -i "$f" -o "${f%.fq.gz}.trimmed.fq.gz" --trim_front1 1
 done
 ```
 
