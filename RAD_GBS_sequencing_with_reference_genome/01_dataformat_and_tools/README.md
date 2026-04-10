@@ -21,7 +21,7 @@ Before we start, it is most convenient to set up an organized directory structur
 |BWA| Mapping low-divergent short reads to a reference genome (https://github.com/lh3/bwa) |
 |SAMTOOLS| Suite of programs for interacting with high-throughput sequencing data (https://www.htslib.org) |
 |FastQC| Versatile tool to perform quality control checks on raw sequence data (https://www.bioinformatics.babraham.ac.uk/projects/fastqc)|
-|MultiQC| Summarizes multiple FastQC outputs into a single interatcive report (https://github.com/MultiQC/MultiQC)|
+|MultiQC| Summarizes multiple FastQC outputs into a single interactive report (https://github.com/MultiQC/MultiQC)|
 |Stacks| Tools specifically designed for processing restriction enzyme-based data (https://catchenlab.life.illinois.edu/stacks)|
 |Fastp| Processing tool to filter, trim or merge sequence reads (https://github.com/opengene/fastp)|
 |PAUP*| Phylogenetic software program to estimate a species trees from SNPs using the SVDQuartets method (https://paup.phylosolutions.com)| 
