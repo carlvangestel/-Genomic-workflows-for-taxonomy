@@ -33,7 +33,7 @@ samtools faidx $GENOME
 
 ### Step 2. Map Paired-End Reads
 
-Assuming that `$READ1` and `$READ2` point to the the forward and reverse fastq files (optionally gzipped) of an individual (e.g. `READ1="./reads/sample01_1.fq.gz"` and `READ2="./reads/sample01_2.fq.gz"`), `$SAMPLE` refers to the sampleID of an individual (`SAMPLE="sample01"`) and `$BAM_OUT` to the output file (`BAM_OUT="./bam/sample01.bam"`) the full command to map paired reads to a reference genome is:
+Assuming that `$READ1` and `$READ2` point to the the forward and reverse fastq files (optionally gzipped) of an individual (e.g. `READ1="./reads/Sample01_Loc1_1.fq.gz"` and `READ2="./reads/sample01_Loc1_2.fq.gz"`), `$SAMPLE` refers to the sampleID of an individual (`SAMPLE="Sample01_Loc1"`) and `$BAM_OUT` to the output file (`BAM_OUT="./bam/Sample01_Loc1.bam"`) the full command to map paired reads to a reference genome is:
 
 ```bash
 bwa mem "$GENOME" "$READ1" "$READ2" | samtools view -bS | samtools sort -o "$BAM_OUT"
