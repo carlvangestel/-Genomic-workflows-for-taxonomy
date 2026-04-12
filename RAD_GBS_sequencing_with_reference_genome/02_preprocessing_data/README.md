@@ -8,9 +8,9 @@ Prior to processing the data, we evaluate read quality using the software packag
 FastQC provides a range of quality metrics that should be carefully examined. In particular, verify that per-base quality scores remain above an acceptable threshold across the entire read length, noting that quality often declines toward the ends of reads. Additionally, inspect the presence of overrepresented sequences, assess the extent of missing or ambiguous data, and check for potential adapter contamination. These indicators help determine whether trimming or filtering steps are required before proceeding.
  
 ```bash
-lib="library1_R1.fq.gz -2 ./library1_R2.fq.gz"
+lib="./reads/library1_R1.fq.gz ./reads/library1_R2.fq.gz"
 for i in $lib;
-do fastqc ./$i -o ./FASTQC/
+do fastqc ./$i -o ./QC/
 done
 ```
 Rather than exploring every single output separately, we will use MultiQC to compile this info into a single interactive htlm report.
@@ -22,7 +22,7 @@ multiqc ./FASTQC/*_fastqc.zip
 During library construction each sample was assigned a unique barcode and then pooled into a common library for sequencing, resulting in one fastq file provided by the sequencing facility. Therefore, we will first demultiplex our sequenced library to separate the pooled NGS data back into individual sample fastq files based on these unique barcodes. We use the function process_radtags of the software package Stacks, which is designed for restriction enzyme–based data and allows both demultiplexing and preliminary quality filtering of raw reads.    
 
 ```bash
-process_radtags -P -1 ./library1_R1.fq.gz -2 ./library1_R2.fq.gz -o ../samples/  -b ./barcode_lib1.txt -e sbfI -r -c -q --inline_index
+process_radtags -P -1 ./reads/library1_R1.fq.gz -2 ./reads/library1_R2.fq.gz -o ./reads/  -b ./barcode_lib1.txt -e sbfI -r -c -q --inline_index
 -i gzfastq
 ```
 The process_radtags command is configured to handle paired-end sequencing data, as indicated by the -P flag. The forward and reverse reads are provided via the -1 and -2 options, respectively, pointing to gzipped fastq files (library1_R1.fastq.gz and library1_R2.fastq.gz). The -e option refers to the specific restriction enzyme used to digest the genome and the -b flag provides sample and library specific barcodes. Processed output files are written to the directory specified by -o (../samples/). Several options are used to improve data quality and retention. The -r flag enables the rescue of barcodes and RAD-tags, allowing reads with minor sequencing errors in the barcode or restriction site to still be retained. The -c option removes reads containing uncalled bases (Ns), ensuring cleaner data, while -q applies a sliding window quality filter to discard low-quality reads when the average quality score within a window drops below a certain threshold. The --inline_index option specifies that one barcode is located within the read sequences themselves and the other in a separate index reads<sup>(*)</sup>. Finally, the -i gzfastq flag defines the input format as gzipped fastq files.
@@ -53,7 +53,7 @@ Overall, this command takes paired-end gzipped FASTQ data, demultiplexes reads i
 Many restriction enzyme–based protocols include a PCR amplification step, which can introduce biases and errors in downstream analyses. A common issue associated with PCR duplicates is the miscalling of heterozygotes as homozygotes during SNP detection. Only wetlab protocols that incorporate random shearing of digested DNA (such as traditional RADseq) allow to identify and remove PCR duplicates. For a nice and detailed overview of different restriction enzyme-based digestion protocols we refer to Andrews et al. (2016) and Davey et al. (2011). To remove PCR duplicates we use the 'clone_filter' function implemented in the Stacks software package. 'Clone_filter' operates by comparing paired-end reads and grouping those that have similar sequences and share identical start and end positions. When multiple read pairs are found to be identical, they are considered PCR duplicates—artifacts of amplification rather than independent DNA molecules. The program retains only one representative read pair from each group and discards the others. This approach relies on the assumption that randomly sheared fragments are unlikely to produce identical start and end coordinates unless they are duplicates generated during PCR.
 
 ```bash
-clone_filter -1 ./Sample1_ACACGACA-ACAGTG.1.fq.gz -2 ./Sample1_ACACGACA-ACAGTG.2.fq.gz -o ../dedup -i gzfastq -y gzfastq  
+clone_filter -1 ./reads/Sample1_ACACGACA-ACAGTG.1.fq.gz -2 ./reads/Sample1_ACACGACA-ACAGTG.2.fq.gz -o ../clean -i gzfastq -y gzfastq  
 ```
 In this command, the -1 and -2 flags specify again the input files corresponding to the forward and reverse reads respectively. The -o flag defines the output directory where the filtered (de-duplicated) reads will be written. The -i option indicates the format of the input files, while the -y option specifies the format of the output files. 
 
@@ -63,7 +63,7 @@ This step might not be necessary for all protocols as it depends on how your lib
 ```bash
 for f in *.2.fq.gz
 do
-    fastp -i "$f" -o "${f%.fq.gz}.trimmed.fq.gz" --trim_front1 1
+    fastp -i ./clean/"$f" -o ./clean/"${f%.fq.gz}.trimmed.fq.gz" --trim_front1 1
 done
 ```
 
@@ -71,10 +71,19 @@ done
 Depending on the output of the quality report you may need to trim reads for low quality bases or remove adapter sequences using Trimmomatic.
 
 ```bash
-java -jar trimmomatic-0.39.jar PE Sample1_ACACGACA-ACAGTG.1.fq.gz Sample1_ACACGACA-ACAGTG.2.trimmed.fq.gz Sample1_ACACGACA-ACAGTG.1_paired.fq.gz Sample1_ACACGACA-ACAGTG.1_unpaired.fq.gz Sample1_ACACGACA-ACAGTG.2.trimmed_paired.fq.gz Sample1_ACACGACA-ACAGTG.2.trimmed_unpaired.fq.gz
- ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:20 TRAILING:20 SLIDINGWINDOW:4:20 MINLEN:50
+sample="Sample1_ACACGACA-ACAGTG"
+dir="./clean"
+
+R1="$dir/${sample}.1.fq.gz"
+R2="$dir/${sample}.2.trimmed.fq.gz"
+R1_p="$dir/${sample}.1_paired.fq.gz"
+R1_u="$dir/${sample}.1_unpaired.fq.gz"
+R2_p="$dir/${sample}.2.trimmed_paired.fq.gz"
+R2_u="$dir/${sample}.2.trimmed_unpaired.fq.gz"
+
+java -jar trimmomatic-0.39.jar PE "$R1" "$R2" "$R1_p" "$R1_u" "$R2_p" "$R2_u" ILLUMINACLIP:TruSeq3-PE.fa:2:30:10 LEADING:20 TRAILING:20 SLIDINGWINDOW:4:20 MINLEN:50
 ```
-The example command above runs Trimmomatic in paired-end (PE) mode to perform adapter trimming and quality trimming on sequencing reads. The file names refer respectively to the forward and reverse input reads. The four output files define how reads are written after processing: '_paired.fq.gz' contain read pairs where both mates survive filtering, whereas 'unpaired.fq.gz' contain reads whose mate was discarded during trimming.
+The example command above runs Trimmomatic in paired-end (PE) mode to perform adapter trimming and quality trimming on sequencing reads. The file names refer respectively to the forward (R1) and reverse (R2) input reads. The four output files define how reads are written after processing: '_paired.fq.gz' contain read pairs where both mates survive filtering, whereas 'unpaired.fq.gz' contain reads whose mate was discarded during trimming.
 
 Adapter sequences are removed using ILLUMINACLIP:TruSeq3-PE.fa:2:30:10, where TruSeq3-PE.fa contains the adapter sequences, 2 defines the maximum mismatches allowed in the initial seed match, 30 sets the palindrome clip threshold for paired-end adapter detection, and 10 sets the simple clip threshold for standard adapter matching. Quality trimming is further performed with LEADING:20 and TRAILING:20, which remove bases from the start and end of reads if their quality score is below 20. The SLIDINGWINDOW:4:20 option scans each read with a 4-base window and trims when the average quality within the window drops below 20. Finally, MINLEN:50 discards any reads shorter than 50 bases after trimming.  
 
@@ -84,8 +93,8 @@ _Note: after trimming and adapter removal you may opt to run FastQC again to ver
 At this point, it can be helpful to rename your files using clear and concise names—such as a concatenation of sample ID and location—to simplify downstream analyses.
 
 ```bash
-cp ./dedup/Sample1_ACACGACA-ACAGTG.1_paired.fq.gz ./names/[ID_samplename]_[location].1.fq.gz
-cp ./dedup/Sample1_ACACGACA-ACAGTG.2.trimmed_paired.fq.gz ./names/[ID_samplename]_[location].2.fq.gz
+cp ./clean/Sample1_ACACGACA-ACAGTG.1_paired.fq.gz ./names/[ID_samplename]_[location].1.fq.gz
+cp ./clean/Sample1_ACACGACA-ACAGTG.2.trimmed_paired.fq.gz ./names/[ID_samplename]_[location].2.fq.gz
 ```
 <br><br>
 _References.  
