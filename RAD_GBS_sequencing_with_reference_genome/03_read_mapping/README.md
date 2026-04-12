@@ -1,16 +1,3 @@
-#### Inspect MAPQ distribution before deciding threshold
-view MAPQ stats: samtools view input.bam | awk '{print $5}' | sort -n | uniq -c
-prints a histogram of MAPQ values to assist in picking a sensible cutoff (e.g., if 90% are ≥30, that’s safe, DISCARD reads MAPQ=0 before calculating percentage).
-run_MAPQthreshold.sh
-
-#### Remove unmapped, secondary and supplementary alignments (-F 2308);  not properly paired reads -f 2; and retain only with a mapping quality (MAPQ) >30 (-q 30)
-Sort and index bam file
-run_filter_bam.sh
-
-#### count how many reads (percentage) retained after filtering
-run_readsRetained.sh
-
-
 ## Mapping Reads to the Reference Genome
 
 To gain meaningful insights from sequencing data, we first need to determine where each read originates from in the genome. This process is called **mapping** or **alignment**, where sequencing reads are matched to a reference genome. There are many mapping tools available, often tailored for specific data types - for example, STAR or HISAT for RNA-seq, minimap2 for long reads, miniprot for protein sequences.   
@@ -71,3 +58,17 @@ BAM_OUT="./bam/${SAMPLE}.bam"
 bwa mem -t 8 "$GENOME" "$READ1" "$READ2" | samtools view -bS | samtools sort -o "$BAM_OUT"
 samtools index "$BAM_OUT"
 ```
+
+### Step 3. Filter alignments
+
+#### Inspect MAPQ distribution before deciding threshold
+view MAPQ stats: samtools view input.bam | awk '{print $5}' | sort -n | uniq -c
+prints a histogram of MAPQ values to assist in picking a sensible cutoff (e.g., if 90% are ≥30, that’s safe, DISCARD reads MAPQ=0 before calculating percentage).
+run_MAPQthreshold.sh
+
+#### Remove unmapped, secondary and supplementary alignments (-F 2308);  not properly paired reads -f 2; and retain only with a mapping quality (MAPQ) >30 (-q 30)
+Sort and index bam file
+run_filter_bam.sh
+
+#### count how many reads (percentage) retained after filtering
+run_readsRetained.sh
