@@ -73,7 +73,5 @@ samtools index "$BAM_OUT"
 
 # Define input and output files
 BAM_IN="./bam/${SAMPLE}.bam"
-BAM_RMD_OUT="./bam/${SAMPLE}.rmd.bam"
-
 
 ```
