@@ -93,8 +93,8 @@ _Note: after trimming and adapter removal you may opt to run FastQC again to ver
 At this point, it can be helpful to rename your files using clear and concise names—such as a concatenation of sample ID and location—to simplify downstream analyses.
 
 ```bash
-cp ./clean/Sample1_ACACGACA-ACAGTG.1_paired.fq.gz ./names/[ID_samplename]_[location].1.fq.gz
-cp ./clean/Sample1_ACACGACA-ACAGTG.2.trimmed_paired.fq.gz ./names/[ID_samplename]_[location].2.fq.gz
+cp ./clean/Sample1_ACACGACA-ACAGTG.1_paired.fq.gz ./names/Sample01_Loc1.1.fq.gz
+cp ./clean/Sample1_ACACGACA-ACAGTG.2.trimmed_paired.fq.gz ./names/Sample01_Loc1.2.fq.gz
 ```
 <br><br>
 _References.  
