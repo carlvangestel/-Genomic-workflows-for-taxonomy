@@ -1,7 +1,3 @@
-##TEST##
-
-
-
 #### Inspect MAPQ distribution before deciding threshold
 view MAPQ stats: samtools view input.bam | awk '{print $5}' | sort -n | uniq -c
 prints a histogram of MAPQ values to assist in picking a sensible cutoff (e.g., if 90% are ≥30, that’s safe, DISCARD reads MAPQ=0 before calculating percentage).
@@ -21,7 +17,7 @@ To gain meaningful insights from sequencing data, we first need to determine whe
 In this workflow, we use **BWA-MEM**, a widely used algorithm within the BWA software suite, to align paired-end reads to a reference genome.
 
 
-### 1. Index the Reference Genome
+### Step 1. Index the Reference Genome
 
 Before mapping, the reference genome must be indexed with BWA. Assuming `$GENOME` points to the reference FASTA file (e.g., `GENOME="./genome/refgenome.fasta"`), indexing is performed using:
 
@@ -35,7 +31,7 @@ For downstream applications, it is often useful to also generate a .fai index us
 samtools faidx $GENOME
 ```
 
-### 2. Map Paired-End Reads
+### Step 2. Map Paired-End Reads
 
 Assuming that `$READ1` and `$READ2` point to the the forward and reverse fastq files (optionally gzipped) of an individual (e.g. `READ1="./reads/sample01_1.fq.gz"` and `READ2="./reads/sample01_2.fq.gz"`), `$SAMPLE` refers to the sampleID of an individual (`SAMPLE="sample01"`) and `$BAM_OUT` to the output file (`BAM_OUT="./bam/sample01.bam"`) the full command to map paired reads to a reference genome is:
 
@@ -76,6 +72,7 @@ bwa mem -t 8 "$GENOME" "$READ1" "$READ2" | samtools view -bS | samtools sort -o 
 samtools index "$BAM_OUT"
 ```
 
+```bash
 # Define input and output files
 BAM_IN="./bam/${SAMPLE}.bam"
 BAM_RMD_OUT="./bam/${SAMPLE}.rmd.bam"
