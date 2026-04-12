@@ -65,10 +65,85 @@ samtools index "$BAM_OUT"
 view MAPQ stats: samtools view input.bam | awk '{print $5}' | sort -n | uniq -c
 prints a histogram of MAPQ values to assist in picking a sensible cutoff (e.g., if 90% are ≥30, that’s safe, DISCARD reads MAPQ=0 before calculating percentage).
 run_MAPQthreshold.sh
+```bash
+module load SAMtools
+
+cd /scratch/gent/vo/000/gvo00032/RADseq/Vesubia/sam_bam/
+echo -e "Percentage calculated from total reads with MAPQ>0 (MAPQ=0 excluded)"
+echo -e "Sample\tMAPQ=0\tMAPQ≥10\tMAPQ≥20\tMAPQ≥30\tMAPQ≥40\tMAPQ≥50" > /scratch/gent/vo/000/gvo00032/RADseq/Vesubia/scripts/mapq_summary.txt
+
+for bam in *.bam; do
+  sample=$(basename "$bam" .bam)
+
+  total=$(samtools view -c "$bam")
+  zero=$(samtools view -c -q 0 "$bam" | awk -v t=$total '{print (t>0)?$1/t*100:0}')   # all reads (including 0)
+  zero_pct=$(awk -v z=$(samtools view -c -q 1 "$bam") -v t=$total 'BEGIN{printf("%.2f", (1 - z/t)*100)}')  # simpler form
+
+  # Compute MAPQ≥10–50 relative to total reads
+  total2=$(samtools view -c -q 1 "$bam")
+  row="$sample\t$zero_pct"
+  for q in 10 20 30 40 50; do
+    keep=$(samtools view -c -q $q "$bam")
+    pct=$(awk -v k=$keep -v t=$total2 'BEGIN { if(t>0) printf("%.2f", (k/t)*100); else print "0" }')
+    row="${row}\t${pct}"
+  done
+
+  echo -e "$row" >> /scratch/gent/vo/000/gvo00032/RADseq/Vesubia/scripts/mapq_summary.txt
+done
+```
 
 #### Remove unmapped, secondary and supplementary alignments (-F 2308);  not properly paired reads -f 2; and retain only with a mapping quality (MAPQ) >30 (-q 30)
+```bash
 Sort and index bam file
 run_filter_bam.sh
+# Purpose: Filter, sort, and index all BAM files in a folder
+#PBS -N filter_bam
+#PBS -l nodes=1:ppn=8,mem=16gb,walltime=72:00:00
+
+# Purpose: Filter, sort, and index all BAM files in a folder
+module load SAMtools
+
+# Number of threads to use for samtools
+THREADS=4
+
+# Output directory
+OUTDIR="bam_filter"
+
+cd /scratch/gent/vo/000/gvo00032/RADseq/Vesubia/sam_bam/
+
+
+for bam in *.bam
+do
+    base=$(basename "$bam" .bam)
+    samtools view -b -q 20 -F 2308 -f 2 -@ ${THREADS} "$bam"  | samtools sort -@ ${THREADS} -o "${OUTDIR}/${base}.clean.sorted.bam"
+    samtools index -@ ${THREADS} "${OUTDIR}/${base}.clean.sorted.bam"
+done
+```
+
+
+
 
 #### count how many reads (percentage) retained after filtering
 run_readsRetained.sh
+```bash
+module load SAMtools
+
+cd /scratch/gent/vo/000/gvo00032/RADseq/Vesubia/sam_bam/
+
+# Output file
+OUTFILE="bam_summary.txt"
+
+# Write header
+echo -e "BAM_File\tInput_Reads\tFiltered_Reads\tPercentage_Retained" >  /scratch/gent/vo/000/gvo00032/RADseq/Vesubia/scripts/bam_summary.txt
+
+# Loop over BAM files
+for bam in *.bam
+do
+    base=$(basename "$bam" .bam)
+    input_count=$(samtools view -c "$bam")
+    filtered_count=$(samtools view -c bam_filter/"${base}.clean.sorted.bam")
+    percentage=$(echo "scale=3; $filtered_count / $input_count"| bc)
+    echo -e "${base}\t${input_count}\t${filtered_count}\t${percentage}" >> /scratch/gent/vo/000/gvo00032/RADseq/Vesubia/scripts/bam_summary.txt
+done
+
+```
