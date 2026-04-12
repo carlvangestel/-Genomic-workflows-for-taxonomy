@@ -9,6 +9,7 @@ Before we start, it is most convenient to set up an organized directory structur
 | `clean`        | Stores cleaned reads (after adapter trimming and quality filtering), if preprocessing is performed. |
 | `genome`       | Stores the reference genome sequence in FASTA format. |
 | `reads`        | Stores the raw sequencing reads in `fastq.gz` format. |
+| `QC`           | Stores the output of quality checks in zip and html format. |
 | `samples`      | Contains a file `samples.txt` listing all sample names (individual IDs). These names should match the basenames of the files in both the `reads` (or `clean`) directories. |
 | `scripts`      | Stores your custom scripts used in the workflow. |
 | `vcf`          | Stores Variant Call Format (VCF) files containing SNP and other variant information for all individuals. |
