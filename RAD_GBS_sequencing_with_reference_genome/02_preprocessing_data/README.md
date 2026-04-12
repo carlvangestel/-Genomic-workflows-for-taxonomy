@@ -61,9 +61,9 @@ In this command, the -1 and -2 flags specify again the input files corresponding
 This step might not be necessary for all protocols as it depends on how your libraries were constructed. During library preparation, we ligated the P2 adaptor to our RADtag via 'A-tailing'. Hence, all our reverse reads start with a 'T', which is not part of the true DNA sequence and should be removed from our reads.
 
 ```bash
-for f in *.2.fq.gz
+for f in ./clean/*.2.fq.gz
 do
-    fastp -i ./clean/"$f" -o ./clean/"${f%.fq.gz}.trimmed.fq.gz" --trim_front1 1
+    fastp -i "$f" -o ./clean/"${f%.fq.gz}.trimmed.fq.gz" --trim_front1 1
 done
 ```
 
