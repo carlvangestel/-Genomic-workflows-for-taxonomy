@@ -70,12 +70,10 @@ BAM_OUT="./bam/${SAMPLE}.bam"
 # Run BWA MEM, convert to BAM and sort
 bwa mem -t 8 "$GENOME" "$READ1" "$READ2" | samtools view -bS | samtools sort -o "$BAM_OUT"
 samtools index "$BAM_OUT"
-```
 
-```bash
 # Define input and output files
 BAM_IN="./bam/${SAMPLE}.bam"
 BAM_RMD_OUT="./bam/${SAMPLE}.rmd.bam"
-BAM_RMD_METRICS="./bam/${SAMPLE}.metrics.rmd.txt"
+
 
 ```
