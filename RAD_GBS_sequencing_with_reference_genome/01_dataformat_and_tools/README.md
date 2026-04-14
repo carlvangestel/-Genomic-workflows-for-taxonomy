@@ -18,9 +18,9 @@ Before we start, it is most convenient to set up an organized directory structur
 
 | Tool      | Description |
 |-----------|-------------|
-|BCFTOOLS| SNP calling and filtering vcf files (https://www.htslib.org/) |
+|BCFTools| SNP calling and filtering vcf files (https://www.htslib.org/) |
 |BWA| Mapping low-divergent short reads to a reference genome (https://github.com/lh3/bwa) |
-|SAMTOOLS| Suite of programs for interacting with high-throughput sequencing data (https://www.htslib.org) |
+|Samtools| Suite of programs for interacting with high-throughput sequencing data (https://www.htslib.org) |
 |FastQC| Versatile tool to perform quality control checks on raw sequence data (https://www.bioinformatics.babraham.ac.uk/projects/fastqc)|
 |MultiQC| Summarizes multiple FastQC outputs into a single interactive report (https://github.com/MultiQC/MultiQC)|
 |Stacks| Tools specifically designed for processing restriction enzyme-based data (https://catchenlab.life.illinois.edu/stacks)|
