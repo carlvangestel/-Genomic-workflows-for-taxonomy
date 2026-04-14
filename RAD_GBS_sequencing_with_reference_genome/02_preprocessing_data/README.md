@@ -8,6 +8,7 @@ Prior to processing the data, we evaluate read quality using the software packag
 FastQC provides a range of quality metrics that should be carefully examined. In particular, verify that per-base quality scores remain above an acceptable threshold across the entire read length, noting that quality often declines toward the ends of reads. Additionally, inspect the presence of overrepresented sequences, assess the extent of missing or ambiguous data, and check for potential adapter contamination. These indicators help determine whether trimming or filtering steps are required before proceeding.
  
 ```bash
+module load FASTQC
 lib="./reads/library1_R1.fq.gz ./reads/library1_R2.fq.gz"
 for i in $lib;
 do fastqc ./$i -o ./QC/
@@ -22,6 +23,7 @@ multiqc ./FASTQC/*_fastqc.zip
 During library construction each sample was assigned a unique barcode and then pooled into a common library for sequencing, resulting in one fastq file provided by the sequencing facility. Therefore, we will first demultiplex our sequenced library to separate the pooled NGS data back into individual sample fastq files based on these unique barcodes. We use the function process_radtags of the software package Stacks, which is designed for restriction enzyme–based data and allows both demultiplexing and preliminary quality filtering of raw reads.    
 
 ```bash
+module load Stacks
 process_radtags -P -1 ./reads/library1_R1.fq.gz -2 ./reads/library1_R2.fq.gz -o ./reads/  -b ./barcode_lib1.txt -e sbfI -r -c -q --inline_index
 -i gzfastq
 ```
@@ -53,6 +55,7 @@ Overall, this command takes paired-end gzipped FASTQ data, demultiplexes reads i
 Many restriction enzyme–based protocols include a PCR amplification step, which can introduce biases and errors in downstream analyses. A common issue associated with PCR duplicates is the miscalling of heterozygotes as homozygotes during SNP detection. Only wetlab protocols that incorporate random shearing of digested DNA (such as traditional RADseq) allow to identify and remove PCR duplicates. For a nice and detailed overview of different restriction enzyme-based digestion protocols we refer to Andrews et al. (2016) and Davey et al. (2011). To remove PCR duplicates we use the 'clone_filter' function implemented in the Stacks software package. 'Clone_filter' operates by comparing paired-end reads and grouping those that have similar sequences and share identical start and end positions. When multiple read pairs are found to be identical, they are considered PCR duplicates—artifacts of amplification rather than independent DNA molecules. The program retains only one representative read pair from each group and discards the others. This approach relies on the assumption that randomly sheared fragments are unlikely to produce identical start and end coordinates unless they are duplicates generated during PCR.
 
 ```bash
+module load Stacks
 clone_filter -1 ./reads/Sample1_ACACGACA-ACAGTG.1.fq.gz -2 ./reads/Sample1_ACACGACA-ACAGTG.2.fq.gz -o ./clean -i gzfastq -y gzfastq  
 ```
 In this command, the -1 and -2 flags specify again the input files corresponding to the forward and reverse reads respectively. The -o flag defines the output directory where the filtered (de-duplicated) reads will be written. The -i option indicates the format of the input files, while the -y option specifies the format of the output files. 
