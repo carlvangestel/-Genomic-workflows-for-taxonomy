@@ -8,7 +8,7 @@ Prior to processing the data, we evaluate read quality using the software packag
 FastQC provides a range of quality metrics that should be carefully examined. In particular, verify that per-base quality scores remain above an acceptable threshold across the entire read length, noting that quality often declines toward the ends of reads. Additionally, inspect the presence of overrepresented sequences, assess the extent of missing or ambiguous data, and check for potential adapter contamination. These indicators help determine whether trimming or filtering steps are required before proceeding.
  
 ```bash
-module load FASTQC
+module load FastQC
 lib="./reads/library1_R1.fq.gz ./reads/library1_R2.fq.gz"
 for i in $lib;
 do fastqc ./$i -o ./QC/
@@ -16,7 +16,8 @@ done
 ```
 Rather than exploring every single output separately, we will use MultiQC to compile this info into a single interactive htlm report.
 ```bash
-multiqc ./FASTQC/*_fastqc.zip
+module load multiqc
+multiqc ./QC/*_fastqc.zip
 ```
 
 #### Step 2. Demultiplex libraries
@@ -64,6 +65,7 @@ In this command, the -1 and -2 flags specify again the input files corresponding
 This step might not be necessary for all protocols as it depends on how your libraries were constructed. During library preparation, we ligated the P2 adaptor to our RADtag via 'A-tailing'. Hence, all our reverse reads start with a 'T', which is not part of the true DNA sequence and should be removed from our reads.
 
 ```bash
+module load fastp
 for f in ./clean/*.2.fq.gz
 do
     fastp -i "$f" -o ./clean/"${f%.fq.gz}.trimmed.fq.gz" --trim_front1 1
