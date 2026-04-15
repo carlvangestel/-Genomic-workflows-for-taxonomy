@@ -99,6 +99,11 @@ done
 
 note:Filtering these reads therefore removes both types indiscriminately, which is appropriate for standard analyses but may discard biologically relevant information in studies focused on structural variation.
 
+Unmapped reads are sequencing reads that could not be aligned to the reference genome
+Secondary alignments occur when a read can map to multiple locations in the genome with similar alignment scores (One alignment is chosen as the primary alignment
+The remaining alternative alignments are marked as secondary)
+Supplementary alignments represent split alignments, where different parts of a single read map to separate genomic locations.
+
 ```bash
 Sort and index bam file
 run_filter_bam.sh
