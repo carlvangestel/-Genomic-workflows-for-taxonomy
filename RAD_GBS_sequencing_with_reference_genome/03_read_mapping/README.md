@@ -92,7 +92,10 @@ for bam in *.bam; do
 done
 ```
 
-#### Remove unmapped, secondary and supplementary alignments (-F 2308);  not properly paired reads -f 2; and retain only with a mapping quality (MAPQ) >30 (-q 30)
+#### Remove unmapped, secondary and supplementary alignments (-F 2308);  not properly paired reads -f 2; and retain only with a mapping quality (MAPQ) >30 (-q 30
+
+note:Filtering these reads therefore removes both types indiscriminately, which is appropriate for standard analyses but may discard biologically relevant information in studies focused on structural variation.
+
 ```bash
 Sort and index bam file
 run_filter_bam.sh
