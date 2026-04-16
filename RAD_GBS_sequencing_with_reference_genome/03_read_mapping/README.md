@@ -92,17 +92,7 @@ do
     samtools index "./${base}.clean.sorted.bam"
 done
 ```
-The main processing step uses samtools view with several filtering flags:
-
--b ensures the output remains in BAM format.
--q 60 keeps only reads with a mapping quality of at least 60, retaining highly confident alignments.
--F 2308 excludes reads with specific SAM flags (such as unmapped reads, secondary alignments, QC failures, duplicates, and supplementary alignments), ensuring only high-quality primary alignments are kept.
--f 2 retains only properly paired reads, which improves reliability in paired-end datasets.
--@ ${THREADS} enables multithreading for faster processing.
-
-The filtered output is directly piped into samtools sort, which sorts the alignments and writes them to ${OUTDIR}/${base}.clean.sorted.bam, again using multiple threads for efficiency.
-
-Finally, samtools index creates an index file for each sorted BAM, enabling fast random access for downstream analyses such as visualization or variant calling.
+The code above loops over all bam files where the -b flag ensures the output remains in BAM format, -q 60 keeps only reads with a mapping quality of at least 60,-f 2 retains only properly paired reads and -F 2308 excludes reads with specific SAM flags (unmapped reads, secondary alignments, and supplementary alignments). You can find detailed information on how to use the -F flag to exclude alignments with certain characteristics at https://samtools.github.io/hts-specs/SAMv1.pdf. Next, the filtered output is directly piped into samtools sort, which sorts the alignments and writes them to a new bam file with the extansion '.clean.sorted.bam'. Finally, samtools index creates again an index file for each sorted BAM file. We're now ready to call SNPs based on our high-quality alignments.
 
 >_Note: not properly paired reads, secondary or supplementary alignments can result from low-quality reads or genuine **structural genomic variation** (e.g., deletions, duplications, inversions). Filtering these reads will remove both types indiscriminately. Therefore, consider your study’s objective carefully and avoid this filtering step when investigating structural variation. However, for many standard analyses applying this filter is appropriate and beneficial to obtain a set of high-confidence alignments as input for downstream analyses._
 
