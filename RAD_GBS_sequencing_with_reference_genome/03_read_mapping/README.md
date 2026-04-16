@@ -60,7 +60,7 @@ samtools index "$BAM_OUT"
 ```
 
 ### Step 3. Filter alignments
-Every read alignment is given a quality score (MAPQ values), a score assigned to each read alignment in a SAM/BAM file that reflects how confidently that read has been placed at a particular position in the reference genome. Higher values mean that the aligner is very confident the read maps uniquely and correctly to the genome. Frequently used threshold value of MAPQ>20 or MAPQ>30 are often used to filetr out reads with low mapping quality. However these values depend on complexity of genome, data and aligners, so it's better to inspect the distribution of mapping values.
+Every read alignment is given a quality score (MAPQ values), a score assigned to each read alignment in a SAM/BAM file that reflects how confidently that read has been placed at a particular position in the reference genome. Higher values mean that the aligner is very confident the read maps uniquely and correctly to the genome. Frequently used threshold value of MAPQ>20 or MAPQ>30 are often used to filetr out reads with low mapping quality. However these values depend on complexity of genome, data and aligners, so it's better to inspect the distribution of mapping values rather than setting a predefined fixed threshold. 
 
 view MAPQ stats: samtools view input.bam | awk '{print $5}' | sort -n | uniq -c
 prints a histogram of MAPQ values to assist in picking a sensible cutoff (e.g., if 90% are ≥30, that’s safe, DISCARD reads MAPQ=0 before calculating percentage).
