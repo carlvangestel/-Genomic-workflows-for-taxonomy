@@ -85,13 +85,11 @@ Besides filtering out poorly mapped reads, we may also opt to remove unmapped, s
 
 ```bash
 module load SAMtools
-THREADS=4
-OUTDIR="bam_filter"
 for bam in *.bam
 do
     base=$(basename "$bam" .bam)
-    samtools view -b -q 60 -F 2308 -f 2 -@ ${THREADS} "$bam"  | samtools sort -@ ${THREADS} -o "${OUTDIR}/${base}.clean.sorted.bam"
-    samtools index -@ ${THREADS} "${OUTDIR}/${base}.clean.sorted.bam"
+    samtools view -b -q 60 -F 2308 -f 2 "$bam"  | samtools sort -o "./${base}.clean.sorted.bam"
+    samtools index "./${base}.clean.sorted.bam"
 done
 ```
 
