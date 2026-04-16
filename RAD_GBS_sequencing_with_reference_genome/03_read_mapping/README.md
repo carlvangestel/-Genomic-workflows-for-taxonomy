@@ -70,10 +70,9 @@ for bam in *.bam; do
 done
 
 #Plot MAPQ histogram in R
-library(ggplot2)
-mapq <- read.table("mapq.txt", col.names = "MAPQ")
-mapq_0 <- subset(mapq, MAPQ != 0)    # Remove MAPQ = 0 for calculating percentiles
-p90 <- quantile(mapq_0$MAPQ, 0.90)    #caculate 90% percentile
+library(ggplot2)                                      #load library
+mapq <- read.table("mapq.txt", col.names = "MAPQ")    #import data
+p90 <- quantile(mapq$MAPQ, 0.90)                      #caculate 90% percentile
 ggplot(mapq, aes(x = MAPQ)) + geom_histogram(binwidth = 2, boundary = 1) + geom_vline(xintercept = p90, linetype = "dashed",linewidth = 1.2) + theme_minimal()
 ```
 In the first part we go over each BAM file, extract the 5th column (MAPQ values) and append it into a single mapq.txt file (you could opt to do it for each bam file separately though, or take a random subset of your alignments if the file gets too big). In the second part we plot a histogram with a mark at the 90th percentile (depending on how stringent you would like to filter).
