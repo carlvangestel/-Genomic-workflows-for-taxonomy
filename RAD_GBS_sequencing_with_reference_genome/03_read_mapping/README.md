@@ -69,70 +69,29 @@ for bam in *.bam; do
     samtools view "$bam" | awk '{print $5}' >> mapq.txt
 done
 
-#Part 2
+#Part2
+library(ggplot2)
+mapq <- read.table("mapq.txt", col.names = "MAPQ")
+mapq <- subset(mapq, MAPQ != 0) # Remove MAPQ = 0 for calculating percentiles
+p80 <- quantile(mapq$MAPQ, 0.8)    #caculate 80% percentile
+p90 <- quantile(mapq$MAPQ, 0.9)    #caculate 90% percentile
 
-#Part3
-
+# Plot histogram in R
+ggplot(mapq, aes(x = MAPQ)) + geom_histogram(binwidth = 1, boundary = 0) + geom_vline(xintercept = p80, linetype = "dashed") +
+  geom_vline(xintercept = p90, linetype = "dashed") + x = "MAPQ", y = "Count") + theme_minimal()
 ```
-In the first part we go over each BAM file (you could opt to do it for each bam file separately), extract the 5th column (MAPQ values) and append it into a single mapq.txt file.
+In the first part we go over each BAM file (you could opt to do it for each bam file separately), extract the 5th column (MAPQ values) and append it into a single mapq.txt file. In the second part we plot a histogram and plot the 80th and 90th percentile for example.
 
 
-
-
-view MAPQ stats: samtools view input.bam | awk '{print $5}' | sort -n | uniq -c
-prints a histogram of MAPQ values to assist in picking a sensible cutoff (e.g., if 90% are ≥30, that’s safe, DISCARD reads MAPQ=0 before calculating percentage).
-run_MAPQthreshold.sh
-```bash
-module load SAMtools
-
-cd /scratch/gent/vo/000/gvo00032/RADseq/Vesubia/sam_bam/
-echo -e "Percentage calculated from total reads with MAPQ>0 (MAPQ=0 excluded)"
-echo -e "Sample\tMAPQ=0\tMAPQ≥10\tMAPQ≥20\tMAPQ≥30\tMAPQ≥40\tMAPQ≥50" > /scratch/gent/vo/000/gvo00032/RADseq/Vesubia/scripts/mapq_summary.txt
-
-for bam in *.bam; do
-  sample=$(basename "$bam" .bam)
-
-  total=$(samtools view -c "$bam")
-  zero=$(samtools view -c -q 0 "$bam" | awk -v t=$total '{print (t>0)?$1/t*100:0}')   # all reads (including 0)
-  zero_pct=$(awk -v z=$(samtools view -c -q 1 "$bam") -v t=$total 'BEGIN{printf("%.2f", (1 - z/t)*100)}')  # simpler form
-
-  # Compute MAPQ≥10–50 relative to total reads
-  total2=$(samtools view -c -q 1 "$bam")
-  row="$sample\t$zero_pct"
-  for q in 10 20 30 40 50; do
-    keep=$(samtools view -c -q $q "$bam")
-    pct=$(awk -v k=$keep -v t=$total2 'BEGIN { if(t>0) printf("%.2f", (k/t)*100); else print "0" }')
-    row="${row}\t${pct}"
-  done
-
-  echo -e "$row" >> /scratch/gent/vo/000/gvo00032/RADseq/Vesubia/scripts/mapq_summary.txt
-done
-```
 
 Besides filtering out poorly mapped reads, we may also opt to remove unmapped, secondary and supplementary alignments as well as not properly paired reads. Not properly paired reads in pair-end sequening data refers to one read not being mapped, not having the expected orientation, mapped on a different chromsome or an unexpectedly large insert size. Unmapped reads are sequencing reads that could not be aligned to the reference genome (they are probably already filtered out if you set a high MAPQ threshold). Secondary and supplemenatry alignment however do not necessarily have low MAPQ values. Secondary alignments occur when a read can map to multiple locations in the genome with similar alignment scores (one alignment is chosen as the primary alignment, the remaining alternative alignments are marked as secondary). Supplementary alignments represent split alignments, where different parts of a single read map to separate genomic locations.
 
 _Note: not properly paired reads, secondary or supplementary alignments can result from low-quality reads or genuine structural genomic variation (e.g., deletions, duplications, inversions). Filtering these reads will remove both types indiscriminately. Therefore, consider your study’s objective carefully. This filtering step should be avoided when investigating structural variation. For many standard analyses, however, applying this filter is appropriate and beneficial and will result in a set of high-confidence alignments._
 
-
 ```bash
-Sort and index bam file
-run_filter_bam.sh
-# Purpose: Filter, sort, and index all BAM files in a folder
-#PBS -N filter_bam
-#PBS -l nodes=1:ppn=8,mem=16gb,walltime=72:00:00
-
-# Purpose: Filter, sort, and index all BAM files in a folder
 module load SAMtools
-
-# Number of threads to use for samtools
 THREADS=4
-
-# Output directory
 OUTDIR="bam_filter"
-
-cd /scratch/gent/vo/000/gvo00032/RADseq/Vesubia/sam_bam/
-
-
 for bam in *.bam
 do
     base=$(basename "$bam" .bam)
