@@ -63,13 +63,13 @@ samtools index "$BAM_OUT"
 Every read alignment is given a quality score (MAPQ values), a score assigned to each read alignment in a SAM/BAM file that reflects how confidently that read has been placed at a particular position in the reference genome. Higher values mean that the aligner is very confident the read maps uniquely and correctly to the genome. Frequently used threshold value of MAPQ>20 or MAPQ>30 are often used to filetr out reads with low mapping quality. However these values depend on complexity of genome, data and aligners, so it's better to inspect the distribution of mapping values rather than setting a predefined fixed threshold. 
 
 ```bash
-#Part 1
+#Extract MAPQ values
 module load SAMtools
 for bam in *.bam; do
     samtools view "$bam" | awk '{print $5}' >> mapq.txt
 done
 
-#Part2
+#Plot MAPQ values
 library(ggplot2)
 mapq <- read.table("mapq.txt", col.names = "MAPQ")
 mapq <- subset(mapq, MAPQ != 0) # Remove MAPQ = 0 for calculating percentiles
@@ -80,7 +80,7 @@ p90 <- quantile(mapq$MAPQ, 0.9)    #caculate 90% percentile
 ggplot(mapq, aes(x = MAPQ)) + geom_histogram(binwidth = 1, boundary = 0) + geom_vline(xintercept = p80, linetype = "dashed") +
   geom_vline(xintercept = p90, linetype = "dashed") + x = "MAPQ", y = "Count") + theme_minimal()
 ```
-In the first part we go over each BAM file (you could opt to do it for each bam file separately), extract the 5th column (MAPQ values) and append it into a single mapq.txt file. In the second part we plot a histogram and plot the 80th and 90th percentile for example.
+In the first part we go over each BAM file (you could opt to do it for each bam file separately), extract the 5th column (MAPQ values) and append it into a single mapq.txt file. In the second part we plot a histogram and plot the 80th and 90th percentile (for example).
 
 
 
