@@ -16,6 +16,8 @@ module load BCFtools
 
 # Define output VCF
 VCF_RAW="./vcf/project.raw.vcf.gz"
+# Define genome file
+GENOME="./genome/refgenome.fasta"
 
 # SNP calling
 bcftools mpileup --min-MQ 30 -a AD,DP,SP -Ou -f "$GENOME" Sample01_Loc1.clean.sorted.bam Sample02_Loc1.clean.sorted.bam Sample03_Loc2.clean.sorted.bam ... | bcftools call -f GQ,GP -m -Oz -o "$VCF_RAW"
