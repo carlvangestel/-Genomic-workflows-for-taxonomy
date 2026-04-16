@@ -1,6 +1,6 @@
 ## SNP calling
 
-Using the BAM files generated in the previous step, we can now identify polymorphic genomic positions—known as single nucleotide polymorphisms (SNPs)—and infer each individual's genotype at those sites. Common tools for SNP calling include the **Genome Analysis Toolkit (GATK)** and **bcftools**. **GATK** is widely used for high-quality variant calling in human genomes, while **bcftools** is well-suited for non-model organisms with moderate-sized genomes (<3 Gb), offering comparable accuracy for these organisms (1).
+Using the BAM files generated in the previous step, we can now identify polymorphic genomic positions, known as single nucleotide polymorphisms (SNPs), and infer each individual's genotype at those sites. Common tools for SNP calling include the **Genome Analysis Toolkit (GATK)** and **bcftools**. **GATK** is widely used for high-quality variant calling in human genomes, while **bcftools** is well-suited for non-model organisms with moderate-sized genomes (<3 Gb), offering comparable accuracy for these organisms (1).
 
 SNP calling with bcftools is a two-step process:
 1.	Counting reads supporting each allele at variable positions.
