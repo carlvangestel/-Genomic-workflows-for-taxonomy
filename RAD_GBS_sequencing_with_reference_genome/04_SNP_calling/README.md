@@ -11,9 +11,6 @@ Given a set of BAM files, we will use the following bcftools command to perform 
 
 ```bash
 #!/bin/bash
-
-cd ~/project
-
 # Load modules
 module load BCFtools
 
@@ -21,7 +18,7 @@ module load BCFtools
 VCF_RAW="./vcf/project.raw.vcf.gz"
 
 # SNP calling
-bcftools mpileup --min-MQ 30 -a AD,DP,SP -Ou -f "$GENOME" sample01.rmd.bam sample02.rmd.bam sample03.rmd.bam ... | bcftools call -f GQ,GP -m -Oz -o "$VCF_RAW"
+bcftools mpileup --min-MQ 30 -a AD,DP,SP -Ou -f "$GENOME" sample01_Loc1.filtered.bam sample02_Loc1.filtered.bam sample03.rmd.bam ... | bcftools call -f GQ,GP -m -Oz -o "$VCF_RAW"
 ```
 
 The first part of the command, `bcftools mpileup`, generates the allelic count data for each individual. The `-f` flag specifies the reference genome, while `-a AD,DP,SP` adds annotations for allele depths (`AD`), total read depth (`DP`), and strand bias (`SP`) to the output. We also want to avoid SNPs to be called from reads that map ambiguously and filtering them out by `–min-MQ 30` (minimum read mapping quality > 30). The `-Ou` flag outputs an uncompressed VCF to standard output. The BAM files are listed at the end.
