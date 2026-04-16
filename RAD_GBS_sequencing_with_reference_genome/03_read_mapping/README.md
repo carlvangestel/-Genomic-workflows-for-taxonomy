@@ -95,7 +95,8 @@ do
 done
 ```
 
-_Note: not properly paired reads, secondary or supplementary alignments can result from low-quality reads or genuine structural genomic variation (e.g., deletions, duplications, inversions). Filtering these reads will remove both types indiscriminately. Therefore, consider your study’s objective carefully and avoid this filtering step when investigating structural variation. However, for many standard analyses applying this filter is appropriate and beneficial and will result in a set of high-confidence alignments._
+[!Note]
+>_Note: not properly paired reads, secondary or supplementary alignments can result from low-quality reads or genuine structural genomic variation (e.g., deletions, duplications, inversions). Filtering these reads will remove both types indiscriminately. Therefore, consider your study’s objective carefully and avoid this filtering step when investigating structural variation. However, for many standard analyses applying this filter is appropriate and beneficial and will result in a set of high-confidence alignments._
 
 
 
