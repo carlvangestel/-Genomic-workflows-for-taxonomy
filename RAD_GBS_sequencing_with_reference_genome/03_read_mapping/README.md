@@ -134,27 +134,3 @@ done
 
 
 
-#### count how many reads (percentage) retained after filtering
-run_readsRetained.sh
-```bash
-module load SAMtools
-
-cd /scratch/gent/vo/000/gvo00032/RADseq/Vesubia/sam_bam/
-
-# Output file
-OUTFILE="bam_summary.txt"
-
-# Write header
-echo -e "BAM_File\tInput_Reads\tFiltered_Reads\tPercentage_Retained" >  /scratch/gent/vo/000/gvo00032/RADseq/Vesubia/scripts/bam_summary.txt
-
-# Loop over BAM files
-for bam in *.bam
-do
-    base=$(basename "$bam" .bam)
-    input_count=$(samtools view -c "$bam")
-    filtered_count=$(samtools view -c bam_filter/"${base}.clean.sorted.bam")
-    percentage=$(echo "scale=3; $filtered_count / $input_count"| bc)
-    echo -e "${base}\t${input_count}\t${filtered_count}\t${percentage}" >> /scratch/gent/vo/000/gvo00032/RADseq/Vesubia/scripts/bam_summary.txt
-done
-
-```
