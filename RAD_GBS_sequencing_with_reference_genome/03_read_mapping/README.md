@@ -69,20 +69,15 @@ for bam in *.bam; do
     samtools view "$bam" | awk '{print $5}' >> mapq.txt
 done
 
-#Plot MAPQ values
+#Plot MAPQ histogram in R
 library(ggplot2)
 mapq <- read.table("mapq.txt", col.names = "MAPQ")
 mapq <- subset(mapq, MAPQ != 0)    # Remove MAPQ = 0 for calculating percentiles
-p80 <- quantile(mapq$MAPQ, 0.8)    #caculate 80% percentile
-p90 <- quantile(mapq$MAPQ, 0.9)    #caculate 90% percentile
-
-# Plot histogram in R
-ggplot(mapq, aes(x = MAPQ)) + geom_histogram(binwidth = 1, boundary = 0) + geom_vline(xintercept = p80, linetype = "dashed") +
-  geom_vline(xintercept = p90, linetype = "dashed") + x = "MAPQ", y = "Count") + theme_minimal()
+p90 <- quantile(mapq$MAPQ, 0.90)    #caculate 90% percentile
+ggplot(mapq, aes(x = MAPQ)) + geom_histogram(binwidth = 2, boundary = 0) + geom_vline(xintercept = p80, linetype = "dashed") +
+  geom_vline(xintercept = p90, linetype = "dashed")+ theme_minimal()
 ```
-In the first part we go over each BAM file (you could opt to do it for each bam file separately), extract the 5th column (MAPQ values) and append it into a single mapq.txt file. In the second part we plot a histogram and plot the 80th and 90th percentile (for example).
-
-
+In the first part we go over each BAM file (you could opt to do it for each bam file separately), extract the 5th column (MAPQ values) and append it into a single mapq.txt file. In the second part we plot a histogram with a mark at the 90th percentile (depending on how stringent you would like to filter).
 
 Besides filtering out poorly mapped reads, we may also opt to remove unmapped, secondary and supplementary alignments as well as not properly paired reads. Not properly paired reads in pair-end sequening data refers to one read not being mapped, not having the expected orientation, mapped on a different chromsome or an unexpectedly large insert size. Unmapped reads are sequencing reads that could not be aligned to the reference genome (they are probably already filtered out if you set a high MAPQ threshold). Secondary and supplemenatry alignment however do not necessarily have low MAPQ values. Secondary alignments occur when a read can map to multiple locations in the genome with similar alignment scores (one alignment is chosen as the primary alignment, the remaining alternative alignments are marked as secondary). Supplementary alignments represent split alignments, where different parts of a single read map to separate genomic locations.
 
