@@ -23,9 +23,6 @@ GENOME="./genome/refgenome.fasta"
 bcftools mpileup --min-MQ 30 -a AD,DP,SP -Ou -f "$GENOME" Sample01_Loc1.clean.sorted.bam Sample02_Loc1.clean.sorted.bam Sample03_Loc2.clean.sorted.bam ... | bcftools call -f GQ,GP -m -Oz -o "$VCF_RAW"
 ```
 
-bcftools mpileup -a AD,DP,SP -Ou -f $GENOME *.bam | bcftools call -f GQ,GP -mO z -o $VCF_DIR/vesubia.RAD.raw.vcf.gz
-
-
 The first part of the command, `bcftools mpileup`, generates the allelic count data for each individual. The `-f` flag specifies the reference genome, while `-a AD,DP,SP` adds annotations for allele depths (`AD`), total read depth (`DP`), and strand bias (`SP`) to the output. We also want to avoid SNPs to be called from reads that map ambiguously and filtering them out by `–min-MQ 30` (minimum read mapping quality > 30). The `-Ou` flag outputs an uncompressed VCF to standard output. The BAM files are listed at the end.
 This output is then piped into `bcftools call`, which performs the actual variant calling. The `-f GQ,GP` flag includes genotype quality (`GQ`) and genotype probabilities (`GP`) in the output VCF. The `-m` flag invokes the multiallelic caller, and `-Oz` specifies compressed VCF (=BCF) output (`vcf.gz`), which is recommended as these VCF files can be very large as they include information of every genomic position. Finally, `-o` defines name of the output VCF. To avoid confusion, it is highly recommended that the output file name extension is `.vcf.gz` if the output vcf is compressed (`-Oz`). If you want the output file to be uncompressed (`-Ou`), use `.vcf` as output file extension. 
 We finally index the compressed VCF for fast querying in downstream applications with the **tabix** tool that is included in **bcftools**. 
