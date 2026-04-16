@@ -76,7 +76,7 @@ mapq_0 <- subset(mapq, MAPQ != 0)    # Remove MAPQ = 0 for calculating percentil
 p90 <- quantile(mapq_0$MAPQ, 0.90)    #caculate 90% percentile
 ggplot(mapq, aes(x = MAPQ)) + geom_histogram(binwidth = 2, boundary = 1) + geom_vline(xintercept = p90, linetype = "dashed",linewidth = 1.2) + theme_minimal()
 ```
-In the first part we go over each BAM file (you could opt to do it for each bam file separately), extract the 5th column (MAPQ values) and append it into a single mapq.txt file. In the second part we plot a histogram with a mark at the 90th percentile (depending on how stringent you would like to filter).
+In the first part we go over each BAM file (you could opt to do it for each bam file separately though, or take a random subset of your alignments if the file gets too big), extract the 5th column (MAPQ values) and append it into a single mapq.txt file. In the second part we plot a histogram with a mark at the 90th percentile (depending on how stringent you would like to filter).
 
 ![histogram_MAPQ](../Images/mapq.png)
 
