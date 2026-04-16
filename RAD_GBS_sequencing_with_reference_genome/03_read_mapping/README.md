@@ -97,7 +97,7 @@ done
 
 #### Remove unmapped, secondary and supplementary alignments (-F 2308);  not properly paired reads -f 2; and retain only with a mapping quality (MAPQ) >30 (-q 30
 
-note:Filtering these reads therefore removes both types indiscriminately, which is appropriate for standard analyses but may discard biologically relevant information in studies focused on structural variation.
+_Note:poor mapping may be due to poor quality reads or may reflect real biological phenomena like strcutural genomic variation (deletions, duplications, inversions). Filtering these reads therefore removes both types indiscriminately. Therefore, carefully reflect on the goal of your study and do not apply this filter step when aiming to study structural variation for example. It is however appropriate for most standard analyses and beneficial to base this on a set of high-confidence reads._
 
 Unmapped reads are sequencing reads that could not be aligned to the reference genome
 Secondary alignments occur when a read can map to multiple locations in the genome with similar alignment scores (One alignment is chosen as the primary alignment
