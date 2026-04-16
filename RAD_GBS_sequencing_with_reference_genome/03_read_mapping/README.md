@@ -79,7 +79,9 @@ In the first part we go over each BAM file, extract the 5th column (MAPQ values)
 
 ![histogram_MAPQ](../Images/mapq.png)
 
-Besides filtering out poorly mapped reads, we may also opt to remove unmapped, secondary and supplementary alignments as well as not properly paired reads. Not properly paired reads in pair-end sequening data refers to one read not being mapped, not having the expected orientation, mapped on a different chromsome or an unexpectedly large insert size. Unmapped reads are sequencing reads that could not be aligned to the reference genome (they are probably already filtered out if you set a high MAPQ threshold). Secondary and supplemenatry alignment however do not necessarily have low MAPQ values. Secondary alignments occur when a read can map to multiple locations in the genome with similar alignment scores (one alignment is chosen as the primary alignment, the remaining alternative alignments are marked as secondary). Supplementary alignments represent split alignments, where different parts of a single read map to separate genomic locations.
+The distribution allows you to keep a balance between stringency and data retention: you can choose a threshold that preserves as much useful data as possible while still filtering out low-confidence alignments. Here, even a cutoff value of 60 would allow for retaining 90% of the data (actually 99%).
+
+Besides filtering out poorly mapped reads, we may also opt to remove unmapped, secondary and supplementary alignments as well as not properly paired reads. Not properly paired reads in pair-end sequening data refers to one read not being mapped, not having the expected orientation, mapped on a different chromosome or an unexpectedly large insert size. Unmapped reads are sequencing reads that could not be aligned to the reference genome (they will probably also be filtered out if you set a high MAPQ threshold). Secondary and supplemenatry alignment however do not necessarily have low MAPQ values. Secondary alignments occur when a read can map to multiple locations in the genome with similar alignment scores (one alignment is chosen as the primary alignment, the remaining alternative alignments are marked as secondary). Supplementary alignments represent split alignments, where different parts of a single read map to separate genomic locations.
 
 ```bash
 module load SAMtools
@@ -88,12 +90,12 @@ OUTDIR="bam_filter"
 for bam in *.bam
 do
     base=$(basename "$bam" .bam)
-    samtools view -b -q 20 -F 2308 -f 2 -@ ${THREADS} "$bam"  | samtools sort -@ ${THREADS} -o "${OUTDIR}/${base}.clean.sorted.bam"
+    samtools view -b -q 60 -F 2308 -f 2 -@ ${THREADS} "$bam"  | samtools sort -@ ${THREADS} -o "${OUTDIR}/${base}.clean.sorted.bam"
     samtools index -@ ${THREADS} "${OUTDIR}/${base}.clean.sorted.bam"
 done
 ```
 
-_Note: not properly paired reads, secondary or supplementary alignments can result from low-quality reads or genuine structural genomic variation (e.g., deletions, duplications, inversions). Filtering these reads will remove both types indiscriminately. Therefore, consider your study’s objective carefully. This filtering step should be avoided when investigating structural variation. For many standard analyses, however, applying this filter is appropriate and beneficial and will result in a set of high-confidence alignments._
+_Note: not properly paired reads, secondary or supplementary alignments can result from low-quality reads or genuine structural genomic variation (e.g., deletions, duplications, inversions). Filtering these reads will remove both types indiscriminately. Therefore, consider your study’s objective carefully and avoid this filtering step when investigating structural variation. However, for many standard analyses applying this filter is appropriate and beneficial and will result in a set of high-confidence alignments._
 
 
 
