@@ -72,7 +72,7 @@ done
 #Plot MAPQ values
 library(ggplot2)
 mapq <- read.table("mapq.txt", col.names = "MAPQ")
-mapq <- subset(mapq, MAPQ != 0) # Remove MAPQ = 0 for calculating percentiles
+mapq <- subset(mapq, MAPQ != 0)    # Remove MAPQ = 0 for calculating percentiles
 p80 <- quantile(mapq$MAPQ, 0.8)    #caculate 80% percentile
 p90 <- quantile(mapq$MAPQ, 0.9)    #caculate 90% percentile
 
