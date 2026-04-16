@@ -9,6 +9,8 @@ In this workflow, we use **BWA-MEM**, a widely used algorithm within the BWA sof
 Before mapping, the reference genome must be indexed with BWA. Assuming `$GENOME` points to the reference FASTA file (e.g., `GENOME="./genome/refgenome.fasta"`), indexing is performed using:
 
 ```bash
+# Define genome file
+GENOME="./genome/refgenome.fasta"
 bwa index $GENOME
 ```
 
