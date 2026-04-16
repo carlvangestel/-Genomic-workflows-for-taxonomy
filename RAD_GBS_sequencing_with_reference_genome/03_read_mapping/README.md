@@ -60,11 +60,8 @@ samtools index "$BAM_OUT"
 ```
 
 ### Step 3. Filter alignments
+Every read alignment is given a quality score (MAPQ values), a score assigned to each read alignment in a SAM/BAM file that reflects how confidently that read has been placed at a particular position in the reference genome. Higher values mean that the aligner is very confident the read maps uniquely and correctly to the genome. Frequently used threshold value of MAPQ>20 or MAPQ>30 are often used to filetr out reads with low mapping quality. However these values depend on complexity of genome, data and aligners, so it's better to inspect the distribution of mapping values.
 
-MAPQ values: s a score assigned to each read alignment in a SAM/BAM file that reflects how confidently that read has been placed at a particular position in the reference genome. Higher values more confident accurate mapping.
-Commonly threshold value of MAPQ>20 or MAPQ>30. However these values depend on complexity of genome, data and aligners, so better to inspect the distribution of mapping values.
-
-#### Inspect MAPQ distribution before deciding threshold
 view MAPQ stats: samtools view input.bam | awk '{print $5}' | sort -n | uniq -c
 prints a histogram of MAPQ values to assist in picking a sensible cutoff (e.g., if 90% are ≥30, that’s safe, DISCARD reads MAPQ=0 before calculating percentage).
 run_MAPQthreshold.sh
@@ -95,14 +92,10 @@ for bam in *.bam; do
 done
 ```
 
-#### Remove unmapped, secondary and supplementary alignments (-F 2308);  not properly paired reads -f 2; and retain only with a mapping quality (MAPQ) >30 (-q 30
+Besides filtering out poorly mapped reads, we may also opt to remove unmapped, secondary and supplementary alignments as well as not properly paired reads. Unmapped reads are sequencing reads that could not be aligned to the reference genome (they are probably already filtered out if you set a high MAPQ threshold). Secondary and supplemenatry alignment however do not necessarily have low MAPQ values. Secondary alignments occur when a read can map to multiple locations in the genome with similar alignment scores (one alignment is chosen as the primary alignment, the remaining alternative alignments are marked as secondary). Supplementary alignments represent split alignments, where different parts of a single read map to separate genomic locations.
 
-_Note: poor mapping can result from low-quality reads or genuine biological events such as structural genomic variation (e.g., deletions, duplications, inversions). Filtering these reads will remove both types indiscriminately. Therefore, consider your study’s objective carefully.This filtering step should be avoided when investigating structural variation. For most standard analyses, however, applying this filter based on high-confidence reads is appropriate and beneficial._
+_Note: secondary or supplmentary alignments can result from low-quality reads or genuine biological events such as structural genomic variation (e.g., deletions, duplications, inversions). Filtering these reads will remove both types indiscriminately. Therefore, consider your study’s objective carefully. This filtering step should be avoided when investigating structural variation. For most standard analyses, however, applying this filter is appropriate and beneficial and will result in a set of high-confidence alignments._
 
-Unmapped reads are sequencing reads that could not be aligned to the reference genome
-Secondary alignments occur when a read can map to multiple locations in the genome with similar alignment scores (One alignment is chosen as the primary alignment
-The remaining alternative alignments are marked as secondary)
-Supplementary alignments represent split alignments, where different parts of a single read map to separate genomic locations.
 
 ```bash
 Sort and index bam file
