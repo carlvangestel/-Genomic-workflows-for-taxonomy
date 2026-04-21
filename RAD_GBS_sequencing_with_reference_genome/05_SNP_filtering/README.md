@@ -1,11 +1,16 @@
 ## SNP filtering
 
-### 1. VCF of SNPs shared in 80% of individuals
-### 1. VCF of SNPs shared in all indivudals
-### 1. VCF of thinned SNPs
+The VCF file generated in the previous step contains genotype information for all genomic positions, including both variable (polymorphic) and invariant sites, as well as genotype calls made with low quality. While this raw VCF (hence the proposed filename extension `.raw.vcf.gz`) is useful as a starting point, this unfiltered VCF is generally not suitable for most downstream analyses, which typically require only high-confidence, polymorphic sites.
+Filtering a VCF file is a critical step that can greatly influence analytical results, especially in population genomics, phylogenetics, or variant association studies. Care must be taken when applying filters to avoid excluding important variants or retaining low-quality data. In the following sections, we will use **BCFtools and VCFtools** to generate a VCF containing only high quality SNPs. Next, we will set a lower limit to the number of individuals that need to share a SNP to avoid any bias due to missing data. Finally, as many genomic analyses may require a set of independent SNPs as input, we will further thin the vcfc to reduce the amount of linkage disequilibrium (i.e. we will select a single SNP per RADtag).   
 
-The VCF file generated in the previous step contains genotype information for all genomic positions, including both variable (polymorphic) and invariant sites, as well as genotype calls made with low quality. While this raw VCF (hence the proposed filename extension `.raw.vcf.gz` ) is useful as a starting point, this unfiltered VCF is generally not suitable for most downstream analyses, which typically require only high-confidence, polymorphic sites.
-Filtering a VCF file is a critical step that can greatly influence analytical results, especially in population genomics, phylogenetics, or variant association studies. Care must be taken when applying filters to avoid excluding important variants or retaining low-quality data. In the following sections, we will generate three different VCF files from the raw input using **bcftools**, each filtered for a specific goal or application. 
+different VCF files from the raw input using **BCFtools or VCFtools**, each filtered for a specific goal or application. 
+
+### 1. A VCF with high quality SNPs
+### 2. A VCF of SNPs shared in 80% of individuals
+### 3. A VCF without missing data
+
+
+
 
 ### 1. VCF without indels
 
