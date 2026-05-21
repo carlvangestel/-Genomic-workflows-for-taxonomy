@@ -10,9 +10,9 @@ In this first filter step we remove multiallelic sites, indels and multi-nucleot
 #!/bin/bash
 module load BCFtools
 VCF_RAW="./vcf/project.raw.vcf.gz"
-VCF_NOINDEL="./vcf/project.noindel.minDP5.vcf.gz"
-bcftools view -V indels,mnps "$VCF_RAW" -Ou | bcftools +setGT -Oz -o "$VCF_NOINDEL" -- -t q -n . -i 'FMT/DP<5'
-tabix -p vcf "$VCF_NOINDEL"
+VCF_HQ="./vcf/project.HQ.minDP15.vcf.gz"
+bcftools view -V indels,mnps -v snps -m2 -M2 "$VCF_RAW" -Ou | bcftools +setGT -Oz -- -t q -n . -i 'FMT/DP<15 | bcftools filter -i 'MIN(GQ)>=30 && MAF>=0.01 && MAF<=0.99 -o "$VCF_HQ" 
+tabix -p vcf "$VCF_HQ"
 ```
 
 ### 2. A VCF of SNPs shared in 80% of individuals
