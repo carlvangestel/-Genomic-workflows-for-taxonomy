@@ -4,6 +4,17 @@ The VCF file generated in the previous step contains genotype information for al
 Filtering a VCF file is a critical step that can greatly influence analytical results, especially in population genomics, phylogenetics, or variant association studies. Care must be taken when applying filters to avoid excluding important variants or retaining low-quality data. In the following sections, we will use **BCFtools and VCFtools** to generate a VCF containing only high quality SNPs. Next, we will set a lower limit to the number of individuals that need to share a SNP to avoid any bias due to missing data. Finally, as many genomic analyses may require a set of independent SNPs as input, we will further thin the vcf to reduce the amount of linkage disequilibrium (i.e. we will select a single SNP per RADtag).
 
 ### 1. A VCF with high quality SNPs
+In this first filter step we remove multiallelic sites, indels and multi-nucleotide polymorphisms and retain only biallelic SNPs with sufficient depth (to exclude possible sequencing errors are being interpreted as SNPs).
+
+```bash
+#!/bin/bash
+module load BCFtools
+VCF_RAW="./vcf/project.raw.vcf.gz"
+VCF_NOINDEL="./vcf/project.noindel.minDP5.vcf.gz"
+bcftools view -V indels,mnps "$VCF_RAW" -Ou | bcftools +setGT -Oz -o "$VCF_NOINDEL" -- -t q -n . -i 'FMT/DP<5'
+tabix -p vcf "$VCF_NOINDEL"
+```
+
 ### 2. A VCF of SNPs shared in 80% of individuals
 ### 3. A VCF without missing data
 
