@@ -15,6 +15,14 @@ bcftools view -V indels,mnps -v snps -m2 -M2 "$VCF_RAW" -Ou | bcftools +setGT -O
 tabix -p vcf "$VCF_HQ"
 ```
 
+The raw VCF file was filtered with bcftools to retain only high-quality biallelic SNPs and to mask unreliable genotype calls. First, bcftools view was used with the options -V indels,mnps and -v snps to exclude insertions/deletions (indels) and multi-nucleotide polymorphisms (MNPs), thereby retaining only single-nucleotide polymorphisms (SNPs). The options -m2 -M2 restricted the dataset to biallelic variants, meaning that only sites with exactly one reference allele and one alternative allele were kept. The filtered output was written in uncompressed BCF format (-Ou) and piped directly to the next processing step.
+
+Next, the bcftools +setGT plugin was used to modify low-confidence genotype calls. The option -t q specified that genotypes should be filtered according to a quality expression, while -n . replaced genotypes failing the filter with missing values (./.). The expression FMT/DP<15 identified genotype calls with sequencing depth below 15 reads, and these low-depth genotypes were masked as missing. The resulting VCF was compressed in BGZF format using -Oz.
+
+Finally, bcftools filter was applied to retain only high-quality variant sites. The expression MIN(GQ)>=30 required all remaining genotype calls at a site to have a minimum genotype quality (GQ) of at least 30. In addition, the minor allele frequency (MAF) was constrained to values between 0.01 and 0.99, thereby removing extremely rare variants and nearly fixed sites. The filtered variants were written to the output file specified by $VCF_HQ.
+
+The final VCF file was indexed with tabix -p vcf, enabling efficient random access to genomic regions within the compressed VCF.
+
 ### 2. A VCF of SNPs shared in 80% of individuals
 ### 3. A VCF without missing data
 
