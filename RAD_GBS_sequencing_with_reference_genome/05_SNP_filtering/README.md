@@ -24,6 +24,9 @@ Finally, bcftools filter was applied to retain only high-quality variant sites. 
 The final VCF file was indexed with tabix -p vcf, enabling efficient random access to genomic regions within the compressed VCF.
 
 ### 2. A VCF of SNPs shared in 80% of individuals
+
+bcftools view -i 'F_MISSING<=0.20' input.vcf.gz -Oz -o snps_max20pct_missing.vcf.gz
+
 ### 3. A VCF without missing data
 
 
