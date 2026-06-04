@@ -74,14 +74,15 @@ done
 #Plot MAPQ histogram in R
 library(ggplot2)                                      #load library
 mapq <- read.table("mapq.txt", col.names = "MAPQ")    #import data
-p90 <- quantile(mapq$MAPQ, 0.90)                      #caculate 90% percentile
-ggplot(mapq, aes(x = MAPQ)) + geom_histogram(binwidth = 2, boundary = 1) + geom_vline(xintercept = p90, linetype = "dashed",linewidth = 1.2) + theme_minimal()
+mapq0 <- subset(mapq, MAPQ != 0)    # Remove MAPQ = 0
+per <- quantile(mapq0$MAPQ, 0.20)                     #caculate percentiles, explore different values
+ggplot(mapq0, aes(x = MAPQ)) + geom_histogram(binwidth = 2, boundary = 1) + geom_vline(xintercept = per, linetype = "dashed",linewidth = 1.2) + theme_minimal()
 ```
-In the first part we go over each BAM file, extract the 5th column (MAPQ values) and append it into a single mapq.txt file (you could opt to do it for each bam file separately though, or take a random subset of your alignments if the file gets too big). In the second part we plot a histogram with a mark at the 90th percentile (depending on how stringent you would like to filter).
+In the first part we go over each BAM file, extract the 5th column (MAPQ values) and append it into a single mapq.txt file (you could opt to do it for each bam file separately though, or take a random subset of your alignments if the file gets too big). In the second part we plot a histogram with a mark at a cretain percentile (depending on how stringent you would like to filter).
 
-![histogram_MAPQ](../Images/mapq.png)
+![histogram_MAPQ](../Images/MAPQ plot Vesubia.png)
 
-Inspecting the distribution allows you to keep a balance between stringency and data retention when setting a threshold: you can choose one that preserves as much useful data as possible while still filtering out low-confidence alignments. Here, even a cutoff value of 60 would allow for retaining 90% of the data (actually even more than 99%).
+Inspecting the distribution allows you to keep a balance between stringency and data retention when setting a threshold: you can choose one that preserves as much useful data as possible while still filtering out low-confidence alignments. Here, a cutoff value of 40 would allow for retaining a large amount of data, while removing poorly mapped reads.
 
 Besides filtering out poorly mapped reads, we may also opt to remove unmapped, secondary and supplementary alignments as well as not properly paired reads. Not properly paired reads in pair-end sequening data refers to one read not being mapped, not having the expected orientation, mapped on a different chromosome or an unexpectedly large insert size. Unmapped reads are sequencing reads that could not be aligned to the reference genome (they will probably also be filtered out if you set a high MAPQ threshold). Secondary and supplemenatry alignment however do not necessarily have low MAPQ values. Secondary alignments occur when a read can map to multiple locations in the genome with similar alignment scores (one alignment is chosen as the primary alignment, the remaining alternative alignments are marked as secondary). Supplementary alignments represent split alignments, where different parts of a single read map to separate genomic locations.
 
