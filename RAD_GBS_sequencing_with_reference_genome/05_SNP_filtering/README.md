@@ -40,6 +40,27 @@ Here, we used previous vcf containing high quality SNPs as input and added the f
 
 ### 3. A thinned VCF
 
+RAD loci often contain multiple SNPs that are physically close and therefore highly linked. Many downstream analyses (e.g., PCA, STRUCTURE, ADMIXTURE, DAPC) assume SNPs are approximately independent. Thinning helps reduce the overrepresentation of genomic regions containing many SNPs and decreases the effect of linkage disequilibrium (LD). We will use the option 'thinning' implemented in VCFTools to retain only SNPs that are at least 1200 bp apart from one another (approximate length of a single RAD tag). Note that we use a distance-based thinning as an approximation and do not estimate the actual LD between SNPs which is often sufficient for most analyses.       
+
+```
+#!/bin/bash
+module load VCFtools
+VCF_80shared="./vcf/project.HQ.minDP15.80shared.vcf.gz"
+"$VCF_thin"="./vcf/project.HQ.minDP15.80shared.thin.vcf.gz"
+vcftools --vcf "$VCF_80shared" --thinning 1200 --recode
+mv output.recode.vcf "$VCF_thin"
+tabix -p vcf "$VCF_thin"
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
