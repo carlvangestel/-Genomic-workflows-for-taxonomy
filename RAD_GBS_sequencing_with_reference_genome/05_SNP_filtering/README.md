@@ -43,8 +43,6 @@ RAD loci frequently contain multiple SNPs located in close physical proximity an
 
 To achieve this, we will use the thinning option implemented in VCFTools to retain only SNPs separated by at least 1,200 bp, which corresponds approximately to the length of a single RAD tag. This approach helps prevent genomic regions containing multiple SNPs from being overrepresented in subsequent analyses.
 
-It is important to note that this procedure uses physical distance as a proxy for linkage and does not directly estimate LD between SNPs. While distance-based thinning is generally sufficient for many population genomic analyses, it remains an approximation and may not fully capture the true patterns of linkage within the dataset.      
-
 ```
 #!/bin/bash
 module load VCFtools
@@ -54,6 +52,8 @@ vcftools --vcf "$VCF_80shared" --thinning 1200 --recode
 mv output.recode.vcf "$VCF_thin"
 tabix -p vcf "$VCF_thin"
 ```
+
+_Note: it is important to note that this procedure uses physical distance as a proxy for linkage and does not directly estimate LD between SNPs; while distance-based thinning is generally sufficient for many population genomic analyses, it remains an approximation and may not fully capture the true patterns of linkage within the dataset._
 
 
 
