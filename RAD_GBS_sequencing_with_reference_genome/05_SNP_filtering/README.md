@@ -23,11 +23,18 @@ Finally, bcftools filter was used to constrain the minor allele frequency (MAF) 
 
 The final VCF file was indexed with tabix -p vcf, enabling efficient random access to genomic regions within the compressed VCF.
 
-### 2. A VCF of SNPs shared in 80% of individuals
+### 2. A VCF shared in 80% of individuals
 
-bcftools view -i 'F_MISSING<=0.20' input.vcf.gz -Oz -o snps_max20pct_missing.vcf.gz
+```
+#!/bin/bash
+module load BCFtools
+VCF_HQ="./vcf/project.HQ.minDP15.vcf.gz"
+VCF_80shared="./vcf/project.HQ.minDP15.80shared.vcf.gz"
+bcftools view -i 'F_MISSING<=0.20' "$VCF_HQ" -Oz -o "$VCF_80shared"
+tabix -p vcf "$VCF_80shared"
+```
 
-### 3. A VCF without missing data
+### 3. A thinned VCF
 
 
 
