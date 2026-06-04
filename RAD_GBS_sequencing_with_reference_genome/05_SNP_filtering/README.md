@@ -39,8 +39,11 @@ tabix -p vcf "$VCF_80shared"
 Here, we used previous vcf containing high quality SNPs as input and added the filter option 'F_MISSING' to allow you to set the criteria of how much missing data you allow per site (maximim 20% missing data per site was allowed in the code above).
 
 ### 3. A thinned VCF
+RAD loci frequently contain multiple SNPs located in close physical proximity and are therefore likely to be in linkage disequilibrium (LD). Because many downstream analyses, such as PCA, STRUCTURE, ADMIXTURE, and DAPC, assume that markers are approximately independent, it is common practice to reduce the representation of linked SNPs in the dataset.
 
-RAD loci often contain multiple SNPs that are physically close and therefore highly linked. Many downstream analyses (e.g., PCA, STRUCTURE, ADMIXTURE, DAPC) assume SNPs are approximately independent. Thinning helps reduce the overrepresentation of genomic regions containing many SNPs and decreases the effect of linkage disequilibrium (LD). We will use the option 'thinning' implemented in VCFTools to retain only SNPs that are at least 1200 bp apart from one another (approximate length of a single RAD tag). Note that we use a distance-based thinning as an approximation and do not estimate the actual LD between SNPs which is often sufficient for most analyses.       
+To achieve this, we will use the thinning option implemented in VCFTools to retain only SNPs separated by at least 1,200 bp, which corresponds approximately to the length of a single RAD tag. This approach helps prevent genomic regions containing multiple SNPs from being overrepresented in subsequent analyses.
+
+It is important to note that this procedure uses physical distance as a proxy for linkage and does not directly estimate LD between SNPs. While distance-based thinning is generally sufficient for many population genomic analyses, it remains an approximation and may not fully capture the true patterns of linkage within the dataset.      
 
 ```
 #!/bin/bash
