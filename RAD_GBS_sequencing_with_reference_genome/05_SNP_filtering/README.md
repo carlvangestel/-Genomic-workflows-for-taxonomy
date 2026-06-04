@@ -1,7 +1,7 @@
 ## SNP filtering
 
 The VCF file generated in the previous step contains genotype information for all genomic positions, including both variable (polymorphic) and invariant sites, as well as genotype calls made with low quality. While this raw VCF (hence the proposed filename extension `.raw.vcf.gz`) is useful as a starting point, this unfiltered VCF is generally not suitable for most downstream analyses, which typically require only high-confidence, polymorphic sites.
-Filtering a VCF file is a critical step that can greatly influence analytical results, especially in population genomics, phylogenetics, or variant association studies. Care must be taken when applying filters to avoid excluding important variants or retaining low-quality data. In the following sections, we will use **BCFtools and VCFtools** to generate a VCF containing only high quality SNPs. Next, we will set a lower limit to the number of individuals that need to share a SNP to avoid any bias due to missing data. Finally, as many genomic analyses may require a set of independent SNPs as input, we will further thin the vcf to reduce the amount of linkage disequilibrium (i.e. we will select a single SNP per RADtag).
+Filtering a VCF file is a critical step that can greatly influence analytical results, especially in population genomics, phylogenetics, or variant association studies. Care must be taken when applying filters to avoid excluding important variants or retaining low-quality data. In the following sections, we will use **BCFtools and VCFtools** to generate a VCF containing only high quality SNPs. Next, we will set a lower limit to the number of individuals that need to share a SNP to avoid any bias due to missing data. Finally, as many genomic analyses may require a set of independent SNPs as input, we will further thin the vcf to reduce the amount of linkage disequilibrium (i.e. we will select (approximately) a single SNP per RADtag).
 
 ### 1. A VCF with high quality SNPs
 In this first filter step we remove multiallelic sites, indels and multi-nucleotide polymorphisms and retain only biallelic SNPs with sufficient depth (to exclude possible sequencing errors are being interpreted as SNPs).
@@ -25,6 +25,9 @@ The final VCF file was indexed with tabix -p vcf, enabling efficient random acce
 
 ### 2. A VCF shared in 80% of individuals
 
+RAD-seq datasets typically contain missing genotypes because restriction sites may be absent in some individuals, sequencing depth can vary among samples, and loci may not be recovered consistently across all samples. As a result, many SNPs are genotyped in only a subset of the samples. Therefore, to reduce the impact of missing data on downstream analyses, SNPs are filtered to retain only those present in, for example, at least 80% of the samples. This is equivalent to requiring a maximum missingness of 20% per locus. 
+It is important to note that the 80% threshold is not a universal standard but rather an arbitrary chosen compromise between data completeness and data retention. The optimal threshold may differ between projects (depending on sequencing depth, number of samples, the study species, ...). It is often advisable to evaluate the effects of different missing data thresholds (e.g., SNPs shared in 70%, 80%, 90%, or even 100% of all samples) on the number of retained SNPs. The choice of threshold therefore reflects a balance between maximizing the number of SNPs available for analysis and minimizing potential biases introduced by excessive missing data.
+
 ```
 #!/bin/bash
 module load BCFtools
@@ -33,6 +36,7 @@ VCF_80shared="./vcf/project.HQ.minDP15.80shared.vcf.gz"
 bcftools view -i 'F_MISSING<=0.20' "$VCF_HQ" -Oz -o "$VCF_80shared"
 tabix -p vcf "$VCF_80shared"
 ```
+Here, the option 'F_MISSING' allows you to set the criteria of how much missing data you allow per site (here maximim 20% missing data per site was allowed).
 
 ### 3. A thinned VCF
 
