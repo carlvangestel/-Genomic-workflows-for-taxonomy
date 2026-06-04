@@ -80,7 +80,7 @@ ggplot(mapq, aes(x = MAPQ)) + geom_histogram(binwidth = 2, boundary = 1) + geom_
 ```
 In the first part we go over each BAM file, extract the 5th column (MAPQ values) and append it into a single mapq.txt file (you could opt to do it for each bam file separately though, or take a random subset of your alignments if the file gets too big). In the second part we plot a histogram with a mark at a cretain percentile (depending on how stringent you would like to filter).
 
-![histogram_MAPQ](./Images/MAPQ plot Vesubia.png)
+![histogram_MAPQ](./Images/MAPQplotVesubia.png)
 
 Inspecting the distribution allows you to keep a balance between stringency and data retention when setting a threshold: you can choose one that preserves as much useful data as possible while still filtering out low-confidence alignments. Here, a cutoff value of 40 would allow for retaining a large amount of data, while removing poorly mapped reads.
 
