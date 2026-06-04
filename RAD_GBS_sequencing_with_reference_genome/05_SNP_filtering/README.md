@@ -26,6 +26,7 @@ The final VCF file was indexed with tabix -p vcf, enabling efficient random acce
 ### 2. A VCF shared in 80% of individuals
 
 RAD-seq datasets typically contain missing genotypes because restriction sites may be absent in some individuals, sequencing depth can vary among samples, and loci may not be recovered consistently across all samples. As a result, many SNPs are genotyped in only a subset of the samples. Therefore, to reduce the impact of missing data on downstream analyses, SNPs are filtered to retain only those present in, for example, at least 80% of the samples. This is equivalent to requiring a maximum missingness of 20% per locus. 
+
 It is important to note that the 80% threshold is not a universal standard but rather an arbitrary chosen compromise between data completeness and data retention. The optimal threshold may differ between projects (depending on sequencing depth, number of samples, the study species, ...). It is often advisable to evaluate the effects of different missing data thresholds (e.g., SNPs shared in 70%, 80%, 90%, or even 100% of all samples) on the number of retained SNPs. The choice of threshold therefore reflects a balance between maximizing the number of SNPs available for analysis and minimizing potential biases introduced by excessive missing data.
 
 ```
