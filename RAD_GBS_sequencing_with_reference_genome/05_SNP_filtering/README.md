@@ -11,7 +11,7 @@ In this first filter step we remove multiallelic sites, indels and multi-nucleot
 module load BCFtools
 VCF_RAW="./vcf/project.raw.vcf.gz"
 VCF_HQ="./vcf/project.HQ.minDP15.vcf.gz"
-bcftools view -V indels,mnps -v snps -m2 -M2 "$VCF_RAW" -Ou | bcftools +setGT -Ou -- -t q -n . -i 'FMT/DP<15 | bcftools filter -i 'MIN(GQ)>=30 && MAF>=0.01 && MAF<=0.99 -oz -o "$VCF_HQ" 
+bcftools view -V indels,mnps -v snps -m2 -M2 "$VCF_RAW" -Ou | bcftools +setGT -Ou -- -t q -n . -i 'FMT/DP<15 || FMT/GQ<30' | bcftools filter -i 'MIN(GQ)>=30 && MAF>=0.01 && MAF<=0.99 -oz -o "$VCF_HQ" 
 tabix -p vcf "$VCF_HQ"
 ```
 
