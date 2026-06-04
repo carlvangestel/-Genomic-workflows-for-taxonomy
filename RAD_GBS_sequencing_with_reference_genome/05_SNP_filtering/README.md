@@ -36,7 +36,7 @@ VCF_80shared="./vcf/project.HQ.minDP15.80shared.vcf.gz"
 bcftools view -i 'F_MISSING<=0.20' "$VCF_HQ" -Oz -o "$VCF_80shared"
 tabix -p vcf "$VCF_80shared"
 ```
-Here, the option 'F_MISSING' allows you to set the criteria of how much missing data you allow per site (here maximim 20% missing data per site was allowed).
+Here, we used previous vcf containing high quality SNPs as input and added the filter option 'F_MISSING' to allow you to set the criteria of how much missing data you allow per site (maximim 20% missing data per site was allowed in the code above).
 
 ### 3. A thinned VCF
 
