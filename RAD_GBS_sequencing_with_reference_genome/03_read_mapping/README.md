@@ -76,7 +76,7 @@ library(ggplot2)                                      #load library
 mapq <- read.table("mapq.txt", col.names = "MAPQ")    #import data
 mapq0 <- subset(mapq, MAPQ != 0)    # Remove MAPQ = 0
 per <- quantile(mapq0$MAPQ, 0.20)                     #caculate percentiles, explore different values
-ggplot(mapq0, aes(x = MAPQ)) + geom_histogram(binwidth = 2, boundary = 1) + geom_vline(xintercept = per, linetype = "dashed",linewidth = 1.2) + theme_minimal()
+ggplot(mapq, aes(x = MAPQ)) + geom_histogram(binwidth = 2, boundary = 1) + geom_vline(xintercept = per, linetype = "dashed",linewidth = 1.2) + theme_minimal()
 ```
 In the first part we go over each BAM file, extract the 5th column (MAPQ values) and append it into a single mapq.txt file (you could opt to do it for each bam file separately though, or take a random subset of your alignments if the file gets too big). In the second part we plot a histogram with a mark at a cretain percentile (depending on how stringent you would like to filter).
 
