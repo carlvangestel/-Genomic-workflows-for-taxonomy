@@ -11,3 +11,4 @@ This section describes the workflow to infer patterns of species divergence usin
 - [3. Map reads](./03_read_mapping)
 - [4. Calling Single Nucleotide Variants (SNPs)](./04_SNP_calling)
 - [5. Filter SNPs](./05_SNP_filtering)
+- [6. SNP-based species tree using SVDQuartets] (./06_SpeciesTree)
