@@ -41,7 +41,7 @@ Define the outgroup (if available) by clicking on 'Data' and 'Define Outgroup'.
 Next we will perform the species tree estimation by clicking on 'Analysis' and 'SVDQuartets'. Use default settings, but select 'Evaluate all possible quartets', set the number of bootstrap values to 1000, select the 'Assign tips to species using taxon partition' so SVDQuartets knows which individual belongs to which taxa (see above) and set the output format (QMC format for example) and press 'ok'.
 
 
-![SpeciesTree](../Images/SVDQuartet.png)
+![InputPaup](../Images/SVDQuartet.png)
 
 
 You almost immediately will obtain the topology of the species tree together with some information on the frequency of quartets that are compatible with the species tree topology and the frequency of quartets that are not in congruence with the species tree. These numbers provide information on the extent of incomplete lineage sorting or introgression among the taxa.
@@ -54,7 +54,7 @@ Ttoal weight of compatible quartets = 78868 (78.868%)
 ```
 Finally, the species tree is plotted with bootstrap values indicating the support in each node.
 
-
+![Speciestree](../Images/SpeciesTree.png)
 
 Note: you can run the same analysis with all samples assigned as separate taxa to explore to what extent all samples of the same putative taxa form a monophyletic group.   
 
