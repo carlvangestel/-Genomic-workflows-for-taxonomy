@@ -5,14 +5,12 @@ We will use PAUP* to estimate the SNP-based species tree using the SVDQuartets t
 
 PAUP* does not accept vcf files and therefore we convert it to a NEXUS format using the script vcf2phylip.
 
-python vcf2phylip.py --input myfile.vcf --phylip-disable --nexus
-
-Example 4: If, for example, you wish to disable the creation of the PHYLIP matrix and only create a NEXUS matrix:
-
+```bash
 python vcf2phylip.py --input ./vcf/project.HQ.minDP15.80shared.vcf --phylip-disable --nexus
-# Which is equivalent to:
-python vcf2phylip.py -i myfile.vcf -p -n
-# This command will create only a NEXUS matrix called myfile_min4.nexus
+```
+This code will generate a NEXUS matrix named project.HQ.minDP15.80shared.nex. --phylipl-disable prevents the creation of the PHYLIP matrix (default) and the --nexus flag points out you wish to vcf to be transformed into a nexus file.
+
+
 
 
 
