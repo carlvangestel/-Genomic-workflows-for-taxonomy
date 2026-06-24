@@ -42,6 +42,8 @@ Next we will perform the species tree estimation by clicking on 'Analysis' and '
 You almost immediately will obtain the topology of the species tree together with some information on the frequency of quartets that are compatible with the species tree topology and the frequency of quartets that are not in congruence with the species tree. These numbers provide information on the extent of incomplete lineage sorting or introgression among the taxa.
 Finally, the species tree is plotted with bootstrap values indicating the support in each node.
 
+![SpeciesTree](../Images/SVDQuartet.png)
+
 Note: you can run the same analysis with all samples assigned as separate taxa to explore to what extent all samples of the same putative taxa form a monophyletic group.   
 
 Reference.
