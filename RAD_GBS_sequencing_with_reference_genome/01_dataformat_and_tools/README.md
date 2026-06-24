@@ -29,6 +29,7 @@ Before we start, it is most convenient to set up an organized directory structur
 |Trimmomatic| A flexible read trimming tool for Illumina NGS data (https://trimmomatic.com)|
 |PAUP*| Phylogenetic software program to estimate a species trees from SNPs using the SVDQuartets method (https://paup.phylosolutions.com)| 
 |R packages| *adegenet* (Exploratory Analysis of Genetic and Genomic Data): contains a set of explorative tools such as multivariate methods to provide low-dimensional visualization of SNP variaton (https://cran.r-project.org/web/packages/adegenet/index.html)|
+|vcf2phylip|tool to convert vcf files into NEXUS format (https://github.com/edgardomortiz/vcf2phylip)|
 
 ## Input data formats
 
