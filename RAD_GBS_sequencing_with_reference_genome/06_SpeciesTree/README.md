@@ -39,6 +39,8 @@ Here, the first 5 sequences (1-5) of the nexus file belong to the taxa 'ARC', th
 Open PAUP*, click on 'File' and browse to your nexus file (cross the option "Execute" at the bottom of the screen). 
 Define the outgroup (if available) by clicking on 'Data' and 'Define Outgroup'. 
 Next we will perform the species tree estimation by clicking on 'Analysis' and 'SVDQuartets'. Use default settings, but select 'Evaluate all possible quartets', set the number of bootstrap values to 1000, select the 'Assign tips to species using taxon partition' so SVDQuartets knows which individual belongs to which taxa (see above) and set the output format (QMC format for example) and press 'ok'.
+
+
 ![SpeciesTree](../Images/SVDQuartet.png)
 
 
