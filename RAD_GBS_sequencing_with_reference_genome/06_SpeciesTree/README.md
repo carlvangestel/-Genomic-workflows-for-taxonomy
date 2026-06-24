@@ -8,7 +8,7 @@ PAUP* does not accept vcf files and therefore we convert it to a NEXUS format us
 ```bash
 python vcf2phylip.py --input ./vcf/project.HQ.minDP15.80shared.thin.vcf --phylip-disable --nexus
 ```
-This code will generate a NEXUS matrix named project.HQ.minDP15.80shared.nex. --phylipl-disable prevents the creation of the PHYLIP matrix (default) and the --nexus flag points out you wish to vcf to be transformed into a nexus file. Note that the SVDQuartets tool is not that computationally demanding and hence a non-thinned file with no missing data is often used as an input file.   
+This code will generate a NEXUS matrix named project.HQ.minDP15.80shared.thin.nex. --phylipl-disable prevents the creation of the PHYLIP matrix (default) and the --nexus flag points out you wish to vcf to be transformed into a nexus file. Note that the SVDQuartets tool is not that computationally demanding and hence a non-thinned file with no missing data is often used as an input file.   
 
 Next, inform PAUP* which samples belong to which taxa by adding the following text to the end of nexus file: 
 ```
