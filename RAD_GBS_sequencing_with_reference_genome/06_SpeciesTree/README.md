@@ -4,6 +4,18 @@ Most species-tree inference methods use either gene trees or genetic sequences a
 
 vcf2phylip
 
+python vcf2phylip.py --input myfile.vcf --phylip-disable --nexus
+
+Example 4: If, for example, you wish to disable the creation of the PHYLIP matrix and only create a NEXUS matrix:
+
+python vcf2phylip.py --input myfile.vcf --phylip-disable --nexus
+# Which is equivalent to:
+python vcf2phylip.py -i myfile.vcf -p -n
+# This command will create only a NEXUS matrix called myfile_min4.nexus
+
+
+
+
 Reference.
 Chifman, J. and L. Kubatko. 2014. Quartet inference from SNP data under the coalescent, Bioinformatics, 30(23): 3317-3324. 
 
